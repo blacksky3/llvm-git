@@ -1,0 +1,56 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Evangelos Foutras <evangelos@foutrelis.com>
+#Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
+
+pkgname=compiler-rt-git
+pkgdesc='Compiler runtime libraries for clang (git version)'
+url='https://compiler-rt.llvm.org/'
+pkgver=13.0.0
+pkgrel=1
+arch=('x86_64')
+license=('custom:Apache 2.0 with LLVM Exception')
+depends=('gcc-libs')
+makedepends=('llvm' 'cmake' 'ninja' 'python')
+# Build 32-bit compiler-rt libraries on x86_64 (FS#41911)
+makedepends_x86_64=('lib32-gcc-libs')
+options=('staticlibs')
+conflicts=('compiler-rt' 'compiler-rt-rc')
+provides=('compiler-rt')
+
+# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+
+prepare(){
+  if ! dir llvm-project; then
+    git clone --depth=1 https://github.com/llvm/llvm-project.git
+  fi
+}
+
+pkgver(){
+  cd llvm-project
+  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build(){
+  cd llvm-project/compiler-rt
+
+  rm -rf build
+
+  cmake -H. -G Ninja -Bbuild \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr
+
+  ninja -C build
+}
+
+package(){
+  cd llvm-project/compiler-rt
+
+  DESTDIR="$pkgdir" ninja -C build/ install
+
+  install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
+
+  mkdir -p "$pkgdir"/usr/lib/clang/13.0.0/{lib,share}
+  mv "$pkgdir"/usr/lib/{linux,clang/13.0.0/lib/}
+  mv "$pkgdir"/usr/{share/*.txt,lib/clang/13.0.0/share/}
+}

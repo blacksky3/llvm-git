@@ -1,0 +1,53 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Laurent Carlier <lordheavym@gmail.com>
+
+pkgname=libclc-git
+pkgdesc='Library requirements of the OpenCL C programming languag (git version)'
+url='https://libclc.llvm.org/'
+pkgver=13.0.0
+pkgrel=1
+arch=('x86_64')
+license=('MIT')
+makedepends=('clang' 'llvm' 'cmake' 'ninja' 'python' 'git' 'spirv-llvm-translator')
+conflicts=('libclc' 'libclc-rc')
+provides=('libclc')
+
+# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+
+prepare(){
+  if ! dir llvm-project; then
+    git clone --depth=1 https://github.com/llvm/llvm-project.git
+  fi
+}
+
+pkgver(){
+  cd llvm-project
+  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build(){
+  cd llvm-project/libclc
+
+  rm -rf build
+
+  #cmake -H. -G Ninja -Bbuild \
+  #-DCMAKE_BUILD_TYPE=Release \
+  #-DCMAKE_INSTALL_PREFIX=/usr
+
+  # workarround for issue : https://bugs.llvm.org/show_bug.cgi?id=49431
+  cmake -H. -G Ninja -Bbuild \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_LLAsm_COMPILER_FORCED=ON \
+  -DLIBCLC_TARGETS_TO_BUILD="clspv--;spirv-mesa3d-;spirv64-mesa3d-"
+  #-DLIBCLC_TARGETS_TO_BUILD="amdgcn--;amdgcn--amdhsa;clspv--;r600--;nvptx--;nvptx64--;nvptx--nvidiacl;nvptx64--nvidiacl;spirv-mesa3d-;spirv64-mesa3d-"
+
+  ninja -C build
+}
+
+package(){
+  DESTDIR="$pkgdir" ninja -C llvm-project/libclc/build/ install
+
+  install -Dm644 llvm-project/libclc/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 llvm-project/libclc/CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
+}

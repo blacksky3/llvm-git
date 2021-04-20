@@ -1,0 +1,60 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Evangelos Foutras <evangelos@foutrelis.com>
+#Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
+
+pkgname=lldb-git
+pkgdesc='Next generation, high-performance debugger (git version)'
+url='https://lldb.llvm.org/'
+pkgver=13.0.0
+pkgrel=1
+arch=('x86_64')
+license=('custom:Apache 2.0 with LLVM Exception')
+depends=('llvm-libs' 'clang' 'python' 'python-six')
+makedepends=('llvm' 'cmake' 'ninja' 'swig' 'python-sphinx')
+conflicts=('lldb' 'lldb-rc')
+provides=('lldb')
+
+# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+
+prepare(){
+  if ! dir llvm-project; then
+    git clone --depth=1 https://github.com/llvm/llvm-project.git
+  fi
+}
+
+pkgver(){
+  cd llvm-project
+  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build(){
+  cd llvm-project/lldb
+
+  rm -rf build
+
+  cmake -H. -G Ninja -Bbuild \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DLLVM_LINK_LLVM_DYLIB=ON \
+  -DCLANG_LINK_CLANG_DYLIB=ON \
+  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLDB_USE_SYSTEM_SIX=1
+
+  ninja -C build all
+  #ninja -C build docs-lldb-man
+}
+
+package(){
+  DESTDIR="$pkgdir" ninja -C llvm-project/lldb/build/ install
+
+  install -Dm644 llvm-project/lldb/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 llvm-project/lldb/CODE_OWNERS.txt "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
+
+  #install -Dm644 llvm-project/lldb/build/docs/man/lldb.1 "$pkgdir/usr/share/man/man1/lldb.1"
+  #install -Dm644 llvm-project/lldb/build/docs/man/lldb-server.1 "$pkgdir/usr/share/man/man1/lldb-server.1"
+
+  # Compile Python scripts
+  python3 -m compileall "$pkgdir"
+  python3 -O -m compileall "$pkgdir"
+  python3 -OO -m compileall "$pkgdir"
+}

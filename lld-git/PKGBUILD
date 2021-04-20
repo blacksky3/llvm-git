@@ -1,0 +1,63 @@
+#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+#Credits: Evangelos Foutras <evangelos@foutrelis.com>
+#Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
+
+pkgname=lld-git
+pkgdesc='Linker from the LLVM project (git version)'
+url='https://lld.llvm.org/'
+pkgver=13.0.0
+pkgrel=1
+arch=('x86_64')
+license=('custom:Apache 2.0 with LLVM Exception')
+depends=('llvm-libs')
+makedepends=('llvm' 'cmake' 'ninja' 'python-sphinx')
+conflicts=('lld' 'lld-rc')
+provides=('lld')
+
+# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+
+prepare(){
+  if ! dir llvm-project; then
+    git clone --depth=1 https://github.com/llvm/llvm-project.git
+  fi
+}
+
+pkgver(){
+  cd llvm-project
+  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+build(){
+  cd llvm-project/lld
+
+  rm -rf build
+
+  cmake -H. -G Ninja -Bbuild \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DPYTHON_EXECUTABLE=/usr/bin/python \
+  -DLLVM_LINK_LLVM_DYLIB=ON \
+  -DLLVM_INCLUDE_TESTS=ON \
+  -DLLVM_BUILD_TESTS=OFF \
+  -DLLVM_BUILD_DOCS=OFF \
+  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+  -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+
+  ninja -C build
+}
+
+package(){
+  cd llvm-project/lld
+
+  DESTDIR="$pkgdir" ninja -C build install
+
+  install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 CODE_OWNERS.TXT "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
+
+  # https://bugs.llvm.org/show_bug.cgi?id=42455
+  install -Dm644 -t "$pkgdir/usr/share/man/man1" docs/ld.lld.1
+
+  # Remove documentation sources
+  #rm -r "$pkgdir"/usr/share/doc/lld/html/{_sources,.buildinfo}
+}
