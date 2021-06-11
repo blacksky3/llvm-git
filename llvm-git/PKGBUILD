@@ -84,7 +84,7 @@ package_llvm-git(){
     # Header stub is taken from Fedora
     mv "$pkgdir/usr/include/llvm/Config/llvm-config"{,-64}.h
     cp "$srcdir/llvm-config.h" "$pkgdir/usr/include/llvm/Config/llvm-config.h"
-    
+
     # workarround for lldb that need llvm/Config/config.h
     cp "$srcdir/llvm-config.h" "$pkgdir/usr/include/llvm/Config/config.h"
   fi

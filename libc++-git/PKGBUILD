@@ -5,7 +5,6 @@
 #Credits: MThinkCpp <mtc [dot] maintainer [at] outlook [dot] com>
 
 pkgbase=libc++-git
-#pkgname=('libc++-git' 'libc++abi-git' 'libc++experimental-git')
 pkgname=('libc++-git' 'libc++experimental-git')
 url='https://libcxx.llvm.org/'
 pkgver=13.0.0
@@ -33,8 +32,6 @@ build(){
 
   rm -rf build-libc++
 
-  rm -rf build-libc++abi
-
   cmake -H. -G Ninja -Bbuild-libc++ \
   -S libcxx  \
   -DCMAKE_BUILD_TYPE=Release \
@@ -43,15 +40,7 @@ build(){
   -DCMAKE_CXX_COMPILER=clang++ \
   -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=NO
 
-  #cmake -H. -G Ninja -Bbuild-libc++abi \
-  #-S libcxxabi  \
-  #-DCMAKE_BUILD_TYPE=Release \
-  #-DCMAKE_INSTALL_PREFIX=/usr \
-  #-DCMAKE_C_COMPILER=clang \
-  #-DCMAKE_CXX_COMPILER=clang++
-
   ninja -C build-libc++
-  #ninja -C build-libc++abi
 }
 
 package_libc++-git(){
@@ -66,18 +55,6 @@ package_libc++-git(){
   install -Dm0644 llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
 }
-
-#package_libc++abi-git(){
-#  pkgdesc='Low level support for the LLVM C++ standard library (git version)'
-#  options=('staticlibs')
-#  conflicts=('libc++abi' 'libc++abi-rc')
-#  provides=('libc++abi')
-
-#  DESTDIR="$pkgdir" ninja -C llvm-project/build-libc++abi/ install
-
-#  install -Dm0644 llvm-project/libcxxabi/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
-#  install -Dm0644 llvm-project/libcxxabi/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
-#}
 
 package_libc++experimental-git(){
   pkgdesc='LLVM C++ experimental library (git version)'

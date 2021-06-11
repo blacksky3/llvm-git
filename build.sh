@@ -16,8 +16,6 @@ cd llvm-git && makepkg -si --noconfirm && cd ..
 
 cd lld-git && makepkg -si --noconfirm && cd ..
 
-cd openmp-git && makepkg -si --noconfirm && cd ..
-
 cd polly-git && makepkg -si --noconfirm && cd ..
 
 cd compiler-rt-git && makepkg -si --noconfirm && cd ..
@@ -31,6 +29,10 @@ cd spirv-llvm-translator-git && makepkg -si --noconfirm && cd ..
 cd libclc-git && makepkg -si --noconfirm && cd ..
 
 cd libc++-git && makepkg -si --noconfirm && cd ..
+
+cd libc++abi-git && makepkg -si --noconfirm && cd ..
+
+cd openmp-git && makepkg -si --noconfirm && cd ..
 
 cd lib32-llvm-git && makepkg -si --noconfirm && cd ..
 
