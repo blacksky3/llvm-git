@@ -5,7 +5,7 @@
 pkgname=clang-git
 pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
-pkgver=13.0.0
+pkgver=13.0.0.2021_07_04.1.3f9bf9f42
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -121,7 +121,11 @@ package(){
 
   # Move analyzer scripts out of /usr/libexec
   mv "$pkgdir"/usr/libexec/{ccc,c++}-analyzer "$pkgdir/usr/lib/clang/"
+  # Move analyse and intercept python scripts to /usr/bin
+  mv "$pkgdir"/usr/libexec/{analyze,intercept}-{c++,cc} "$pkgdir/usr/bin/"
+  # Remove /usr/libexec
   rmdir "$pkgdir/usr/libexec"
+  # Replace libexec path to /usr/lib/clang/ path in scan-build script
   sed -i 's|libexec|lib/clang|' "$pkgdir/usr/bin/scan-build"
 
   # Install Python bindings
