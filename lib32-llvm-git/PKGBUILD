@@ -2,6 +2,17 @@
 #Credits: Evangelos Foutras <evangelos@foutrelis.com>
 #Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
 
+#######################################
+
+#Set '1' to build with GCC
+#Set '2' to build with CLANG
+#Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
+if [ -z ${_compiler+x} ]; then
+  _compiler=
+fi
+
+#######################################
+
 pkgname=('lib32-llvm-git' 'lib32-llvm-libs-git' 'lib32-clang-git')
 url='https://llvm.org/'
 pkgver=13.0.0
@@ -25,6 +36,16 @@ pkgver(){
 }
 
 build(){
+if [[ $_compiler = "1" ]]; then
+  export CC="gcc -m64"
+  export CXX="g++ -m64"
+elif [[ $_compiler = "2" ]]; then
+  export CC="clang -m64"
+  export CXX="clang++ -m64"
+else
+  export CC="gcc -m64"
+  export CXX="g++ -m64"
+fi
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 
   cd llvm-project/llvm
