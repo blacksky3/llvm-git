@@ -37,14 +37,14 @@ pkgver(){
 
 build(){
 if [[ $_compiler = "1" ]]; then
-  export CC="gcc -m64"
-  export CXX="g++ -m64"
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
 elif [[ $_compiler = "2" ]]; then
-  export CC="clang -m64"
-  export CXX="clang++ -m64"
+  export CC="clang -m32"
+  export CXX="clang++ -m32"
 else
-  export CC="gcc -m64"
-  export CXX="g++ -m64"
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
 fi
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 
