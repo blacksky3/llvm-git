@@ -4,7 +4,7 @@
 pkgname=libclc-git
 pkgdesc='Library requirements of the OpenCL C programming languag (git version)'
 url='https://libclc.llvm.org/'
-pkgver=13.0.0
+pkgver=14.0.0
 pkgrel=1
 arch=('x86_64')
 license=('MIT')
@@ -22,7 +22,7 @@ prepare(){
 
 pkgver(){
   cd llvm-project
-  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+  echo 14.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build(){

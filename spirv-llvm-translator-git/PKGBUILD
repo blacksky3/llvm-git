@@ -16,7 +16,7 @@ fi
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
-pkgver=13.0.0
+pkgver=14.0.0
 pkgrel=1
 arch=('x86_64')
 license=(custom)
@@ -29,7 +29,7 @@ md5sums=('SKIP')
 
 pkgver(){
   cd SPIRV-LLVM-Translator
-  echo 13.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+  echo 14.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build() {
