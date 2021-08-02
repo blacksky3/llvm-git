@@ -4,7 +4,7 @@
 pkgname=openmp-git
 pkgdesc='LLVM OpenMP Runtime Library (git version)'
 url='https://openmp.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.2021_08_01.1.25a288b00
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')

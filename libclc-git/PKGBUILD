@@ -4,7 +4,7 @@
 pkgname=libclc-git
 pkgdesc='Library requirements of the OpenCL C programming languag (git version)'
 url='https://libclc.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.2021_08_01.1.25a288b00
 pkgrel=1
 arch=('x86_64')
 license=('MIT')

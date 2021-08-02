@@ -5,7 +5,7 @@
 pkgname=lld-git
 pkgdesc='Linker from the LLVM project (git version)'
 url='https://lld.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.2021_08_01.1.56e7b6c39
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')

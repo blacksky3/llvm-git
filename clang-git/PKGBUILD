@@ -5,7 +5,7 @@
 pkgname=clang-git
 pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.2021_08_01.1.56e7b6c39
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -89,7 +89,7 @@ build() {
   cmake_args+=(-DLLVM_DISTRIBUTION_COMPONENTS="$distribution_components")
 
   cmake .. "${cmake_args[@]}"
-  ninja
+  ninja -j12
 }
 
 _python2_optimize(){
