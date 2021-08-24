@@ -15,7 +15,7 @@ fi
 
 pkgname=('lib32-llvm-git' 'lib32-llvm-libs-git' 'lib32-clang-git')
 url='https://llvm.org/'
-pkgver=14.0.0.2021_08_01.1.25a288b00
+pkgver=14.0.0
 pkgrel=1
 arch=('i686' 'x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -71,7 +71,7 @@ export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   -DLLVM_BINUTILS_INCDIR=/usr/include \
   -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra"
 
-  ninja -j12 -C build all
+  ninja -C build all
   ninja -C build ocaml_doc
 }
 

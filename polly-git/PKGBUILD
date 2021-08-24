@@ -4,7 +4,7 @@
 pkgname=polly-git
 pkgdesc='High-level loop and data-locality optimizer and optimization infrastructure for LLVM (git version)'
 url='https://polly.llvm.org/'
-pkgver=14.0.0.2021_08_01.1.56e7b6c39
+pkgver=14.0.0
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')

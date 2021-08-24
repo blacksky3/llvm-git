@@ -7,7 +7,7 @@
 pkgbase=libc++-git
 pkgname=('libc++-git' 'libc++experimental-git')
 url='https://libcxx.llvm.org/'
-pkgver=14.0.0.2021_08_01.1.25a288b00
+pkgver=14.0.0
 pkgrel=1
 license=('custom:Apache 2.0 with LLVM Exception')
 arch=('x86_64')
