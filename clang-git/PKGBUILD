@@ -14,9 +14,11 @@ makedepends=('llvm' 'cmake' 'ninja' 'python-sphinx' 'python2')
 optdepends=('openmp: OpenMP support in clang with -fopenmp'
             'python: for scan-view and git-clang-format'
             'llvm: referenced by some clang headers')
-conflicts=('clang-analyzer' 'clang-tools-extra' 'clang' 'clang-rc')
+conflicts=('clang-analyzer' 'clang-tools-extra' 'clang')
 replaces=('clang-analyzer' 'clang-tools-extra')
 provides=('clang-analyzer' 'clang-tools-extra' 'clang')
+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
+md5sums=('SKIP')
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
 # installing static libraries; inspired by Gentoo
@@ -40,21 +42,24 @@ _get_distribution_components(){
   done
 }
 
-# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+pkgver() {
+  cd llvm-project/llvm
+
+  # This will almost match the output of `llvm-config --version` when the
+  # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
+  # dash being replaced with underscore because of Pacman requirements.
+  local _pkgver=$(awk -F 'MAJOR |MINOR |PATCH |)' \
+  'BEGIN { ORS="." ; i=0 } \
+  /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
+  END { print "\n" }' \
+  CMakeLists.txt).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
+  echo "$_pkgver"
+}
 
 prepare(){
-  if ! dir llvm-project; then
-    git clone --depth=1 https://github.com/llvm/llvm-project.git
-  fi
-
   if ! dir llvm-project/clang/tools/extra; then
     cp -r llvm-project/clang-tools-extra llvm-project/clang/tools/extra
   fi
-}
-
-pkgver(){
-  cd llvm-project
-  echo 14.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
 }
 
 build() {

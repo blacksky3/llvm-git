@@ -5,26 +5,29 @@
 pkgbase=llvm-git
 pkgname=("$pkgbase" 'llvm-libs-git' 'llvm-ocaml-git')
 url='https://llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0_r400588.237e9059f781
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
 makedepends=('cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 'ocaml' 'ocaml-ctypes' 'ocaml-findlib' 'python-setuptools' 'python-psutil' 'python-sphinx' 'python-recommonmark')
 options=('staticlibs')
-source=('llvm-config.h')
-md5sums=('SKIP')
+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
+        "llvm-config.h")
+md5sums=('SKIP'
+         'SKIP')
 
-# remove llvm github source from source add do a git clone --depth=1 for fast cloning
+pkgver() {
+  cd llvm-project/llvm
 
-prepare(){
-  if ! dir llvm-project; then
-    git clone --depth=1 https://github.com/llvm/llvm-project.git
-  fi
-}
-
-pkgver(){
-  cd llvm-project
-  echo 14.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+  # This will almost match the output of `llvm-config --version` when the
+  # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
+  # dash being replaced with underscore because of Pacman requirements.
+  local _pkgver=$(awk -F 'MAJOR |MINOR |PATCH |)' \
+  'BEGIN { ORS="." ; i=0 } \
+  /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
+  END { print "\n" }' \
+  CMakeLists.txt).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
+  echo "$_pkgver"
 }
 
 build(){
@@ -55,7 +58,7 @@ build(){
 package_llvm-git(){
   pkgdesc='Collection of modular and reusable compiler and toolchain technologies (git version)'
   depends=('llvm-libs' 'perl')
-  conflicts=('llvm' 'llvm-rc')
+  conflicts=('llvm')
   provides=('llvm')
 
   cd llvm-project/llvm/build
@@ -100,7 +103,7 @@ package_llvm-git(){
 package_llvm-libs-git(){
   pkgdesc='LLVM runtime libraries'
   depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2')
-  conflicts=('llvm-libs' 'llvm-libs-rc')
+  conflicts=('llvm-libs')
   provides=('llvm-libs')
 
   install -d "$pkgdir/usr/lib"
@@ -122,7 +125,7 @@ package_llvm-libs-git(){
 package_llvm-ocaml-git(){
   pkgdesc='OCaml bindings for LLVM (git version)'
   depends=('llvm' "ocaml" 'ocaml-ctypes')
-  conflicts=('llvm-ocaml' 'llvm-ocaml-rc')
+  conflicts=('llvm-ocaml')
   provides=('llvm-ocaml')
 
   #install -d "$pkgdir"/{usr/lib,usr/share/doc/$pkgname}

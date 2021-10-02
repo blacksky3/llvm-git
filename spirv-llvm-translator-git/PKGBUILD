@@ -16,20 +16,21 @@ fi
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
-pkgver=14.0.0
+pkgver=14.0.0.r1400.g4d66fe7f
 pkgrel=1
 arch=('x86_64')
 license=(custom)
 depends=('llvm-libs')
 makedepends=('cmake' 'llvm' 'spirv-tools' 'spirv-headers' 'python' 'python-setuptools' 'clang' 'make' 'ninja' 'gcc' 'gcc-libs')
-conflicts=('spirv-llvm-translator' 'spirv-llvm-translator-rc')
+conflicts=('spirv-llvm-translator')
 provides=('spirv-llvm-translator')
 source=('SPIRV-LLVM-Translator::git+https://github.com/KhronosGroup/SPIRV-LLVM-Translator.git')
 md5sums=('SKIP')
 
 pkgver(){
   cd SPIRV-LLVM-Translator
-  echo 14.0.0.$(date -I | sed 's/-/_/' | sed 's/-/_/').$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+
+  echo 14.0.0.r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
 }
 
 prepare(){
