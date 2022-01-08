@@ -89,9 +89,7 @@ build() {
   -DLLVM_ENABLE_SPHINX=OFF \
   -DSPHINX_WARNINGS_AS_ERRORS=OFF \
   -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-  -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm" \
-  -DCLANG_ENABLE_CLANGD=OFF
-
+  -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
 
   cmake .. "${cmake_args[@]}"
   local distribution_components=$(_get_distribution_components | paste -sd\;)
