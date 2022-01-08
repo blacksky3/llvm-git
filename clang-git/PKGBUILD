@@ -123,7 +123,6 @@ package(){
   mv "$pkgdir"/usr/lib/{libear,libscanbuild} "$pkgdir/$site_packages/"
   cp -a ../bindings/python/clang "$pkgdir/$site_packages/"
 
-
   # Move analyzer scripts out of /usr/libexec
   mv "$pkgdir"/usr/libexec/* "$pkgdir/usr/lib/clang/"
   rmdir "$pkgdir/usr/libexec"
