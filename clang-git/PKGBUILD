@@ -57,9 +57,7 @@ pkgver() {
 }
 
 prepare(){
-  if ! dir llvm-project/clang/tools/extra; then
-    cp -r llvm-project/clang-tools-extra llvm-project/clang/tools/extra
-  fi
+  cp -r llvm-project/clang-tools-extra llvm-project/clang/tools/extra
   
   # Attempt to convert script to Python 3
   2to3 -wn --no-diffs \
