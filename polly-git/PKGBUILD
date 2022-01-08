@@ -31,6 +31,9 @@ pkgver() {
 
 build(){
   cd llvm-project/polly
+  
+  CFLAGS+=' -ffat-lto-objects'
+  CXXFLAGS+=' -ffat-lto-objects'
 
   rm -rf build
 
