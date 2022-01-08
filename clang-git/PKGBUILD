@@ -60,6 +60,10 @@ prepare(){
   if ! dir llvm-project/clang/tools/extra; then
     cp -r llvm-project/clang-tools-extra llvm-project/clang/tools/extra
   fi
+  
+  # Attempt to convert script to Python 3
+  2to3 -wn --no-diffs \
+    tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 }
 
 build() {
@@ -97,22 +101,11 @@ build() {
   ninja
 }
 
-_python2_optimize(){
-  python2 -m compileall "$@"
-  python2 -O -m compileall "$@"
+_python_optimize(){
+  python -m compileall "$@"
+  python -O -m compileall "$@"
+  python -OO -m compileall "$@"
 }
-
-_python3_optimize(){
-  python3 -m compileall "$@"
-  python3 -O -m compileall "$@"
-  python3 -OO -m compileall "$@"
-}
-
-#_python_optimize(){
-#  python -m compileall "$@"
-#  python -O -m compileall "$@"
-#  python -OO -m compileall "$@"
-#}
 
 package(){
   DESTDIR="$pkgdir" ninja -C llvm-project/clang/build/ install-distribution
@@ -123,38 +116,21 @@ package(){
   # Remove documentation sources
   #rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
   #rm -r "$pkgdir"/usr/share/doc/clang/html/{_sources,.buildinfo}
+  
+  # Move scanbuild-py into site-packages and install Python bindings
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d "$pkgdir/$site_packages"
+  mv "$pkgdir"/usr/lib/{libear,libscanbuild} "$pkgdir/$site_packages/"
+  cp -a ../bindings/python/clang "$pkgdir/$site_packages/"
+
 
   # Move analyzer scripts out of /usr/libexec
-  mv "$pkgdir"/usr/libexec/{ccc,c++}-analyzer "$pkgdir/usr/lib/clang/"
-  # Move analyse and intercept python scripts to /usr/bin
-  mv "$pkgdir"/usr/libexec/{analyze,intercept}-{c++,cc} "$pkgdir/usr/bin/"
-  # Remove /usr/libexec
+  mv "$pkgdir"/usr/libexec/* "$pkgdir/usr/lib/clang/"
   rmdir "$pkgdir/usr/libexec"
-  # Replace libexec path to /usr/lib/clang/ path in scan-build script
-  sed -i 's|libexec|lib/clang|' "$pkgdir/usr/bin/scan-build"
-
-  # Install Python bindings
-  for _py in 2.7 3.9; do
-    install -d "$pkgdir/usr/lib/python$_py/site-packages"
-    cp -a llvm-project/clang/bindings/python/clang "$pkgdir/usr/lib/python$_py/site-packages/"
-    _python${_py%%.*}_optimize "$pkgdir/usr/lib/python$_py"
-  done
-
-  # Fix shebang in Python 2 script
-  sed -i '1s|/usr/bin/env python$|&2|' "$pkgdir"/usr/share/clang/run-find-all-symbols.py
-  touch -d @$SOURCE_DATE_EPOCH "$pkgdir"/usr/share/clang/run-find-all-symbols.py
+  sed -i 's|libexec|lib/clang|' \
+    "$pkgdir/usr/bin/scan-build" \
+    "$pkgdir/$site_packages/libscanbuild/analyze.py"
 
   # Compile Python scripts
-  _python2_optimize "$pkgdir/usr/share/clang"
-  _python3_optimize "$pkgdir/usr/share" -x 'clang-include-fixer|run-find-all-symbols'
-
-  #_py="3.9"
-  #cd llvm-project
-  # Install Python bindings and optimize them
-  #cp -a llvm/bindings/python/llvm  "$pkgdir"/usr/lib/python$_py/site-packages/
-  #cp -a clang/bindings/python/clang  "$pkgdir"/usr/lib/python$_py/site-packages/
-  #_python_optimize "$pkgdir"/usr/lib/python$_py/site-packages
-
-  #optimize other python files except 2 problem cases
-  #_python_optimize "$pkgdir"/usr/share -x 'clang-include-fixer|run-find-all-symbols'
+  _python_optimize "$pkgdir/usr/share" "$pkgdir/$site_packages"
 }
