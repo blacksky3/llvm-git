@@ -43,7 +43,7 @@ _get_distribution_components(){
 }
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${scrdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -65,7 +65,7 @@ prepare(){
 }
 
 build() {
-  cd llvm-project/clang
+  cd ${scrdir}//llvm-project/clang
 
   rm -rf build
 
@@ -118,7 +118,7 @@ package(){
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d "$pkgdir/$site_packages"
   mv "$pkgdir"/usr/lib/{libear,libscanbuild} "$pkgdir/$site_packages/"
-  cp -a ../bindings/python/clang "$pkgdir/$site_packages/"
+  cp -a ${scrdir}/llvm-project/clang/bindings/python/clang "$pkgdir/$site_packages/"
 
   # Move analyzer scripts out of /usr/libexec
   mv "$pkgdir"/usr/libexec/* "$pkgdir/usr/lib/clang/"
