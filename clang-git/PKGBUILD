@@ -118,7 +118,7 @@ package(){
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d "$pkgdir/$site_packages"
   mv "$pkgdir"/usr/lib/{libear,libscanbuild} "$pkgdir/$site_packages/"
-  cp -a ${scrdir}/llvm-project/clang/bindings/python/clang "$pkgdir/$site_packages/"
+  cp -a ${srcdir}/llvm-project/clang/bindings/python/clang "$pkgdir/$site_packages/"
 
   # Move analyzer scripts out of /usr/libexec
   mv "$pkgdir"/usr/libexec/* "$pkgdir/usr/lib/clang/"
