@@ -1,0 +1,90 @@
+# Maintener: Anatol Pomozov
+# Contributor: Llewelyn Trahaearn <woefulderelict [at] gmail [dot] com>
+# Contributor: Daniel Micay <danielmicay [at] gmail [dot] com>
+# Contributor: MThinkCpp <mtc [dot] maintainer [at] outlook [dot] com>
+
+pkgbase=libc++-git
+pkgname=('libc++-git' 'libc++abi-git' 'libc++experimental-git')
+url='https://libcxx.llvm.org/'
+pkgver=14.0.0
+pkgrel=1
+license=('custom:Apache 2.0 with LLVM Exception')
+arch=('x86_64')
+depends=('gcc-libs')
+makedepends=('clang' 'cmake' 'llvm' 'libunwind' 'ninja' 'python')
+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
+md5sums=('SKIP')
+
+pkgver(){
+  cd ${srcdir}/llvm-project/llvm
+
+  # This will almost match the output of `llvm-config --version` when the
+  # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
+  # dash being replaced with underscore because of Pacman requirements.
+  local _pkgver=$(awk -F 'MAJOR |MINOR |PATCH |)' \
+  'BEGIN { ORS="." ; i=0 } \
+  /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
+  END { print "\n" }' \
+  CMakeLists.txt).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
+  echo "$_pkgver"
+}
+
+prepare(){
+  mkdir -p build
+
+  cp -r ${srcdir}/llvm-project/libcxx ${srcdir}/llvm-project/llvm/projects/
+  cp -r ${srcdir}/llvm-project/libcxxabi ${srcdir}/llvm-project/llvm/projects/
+}
+
+build(){
+  cd build
+
+  cmake \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=NO \
+    "$srcdir"/llvm-project/llvm
+    
+    ninja cxx 
+    ninja cxx_experimental
+}
+
+# Do not remove the space before the () or commitpkg will
+# accidentally to run this function on the system (!!!)
+package_libc++-git(){
+  pkgdesc='LLVM C++ standard library.'
+  depends=('libc++abi')
+  options=('staticlibs')
+  conflicts=('libc++')
+  provides=('libc++')
+
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxx
+
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+}
+
+package_libc++abi-git(){
+  pkgdesc='Low level support for the LLVM C++ standard library.'
+  options=('staticlibs')
+
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxxabi
+
+  install -Dm0644 ${srcdir}/llvm-project/libcxxabi/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project/libcxxabi/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+}
+
+package_libc++experimental-git(){
+  pkgdesc='LLVM C++ experimental library.'
+  depends=('libc++')
+  conflicts=('libc++experimental')
+  provides=('libc++experimental')
+
+  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/libc++experimental.a
+
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+}
