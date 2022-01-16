@@ -43,7 +43,7 @@ _get_distribution_components(){
 }
 
 pkgver() {
-  cd ${scrdir}/llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
