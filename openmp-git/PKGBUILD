@@ -4,7 +4,7 @@
 pkgname=openmp-git
 pkgdesc='LLVM OpenMP Runtime Library (git version)'
 url='https://openmp.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411227.g7cbbef5bbc35
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -44,7 +44,7 @@ build(){
 }
 
 package(){
-  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/openmpbuild/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/openmp/build/ install
 
   install -Dm644 "$srcdir/llvm-project/openmp/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/openmp/CREDITS.txt" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"

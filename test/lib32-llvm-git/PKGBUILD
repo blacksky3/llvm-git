@@ -4,7 +4,7 @@
 
 pkgname=('lib32-llvm-git' 'lib32-llvm-libs-git')
 url='https://llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411228.g0d7fbb073768
 pkgrel=1
 arch=('i686' 'x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -88,6 +88,9 @@ package_lib32-llvm-git(){
   install -Dm644 "$srcdir/llvm-project/llvm/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/llvm/CREDITS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
   install -Dm644 "$srcdir/llvm-project/llvm/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
+
+  # remove ocaml lib/ dir
+  rm -rf $pkgdir/usr/lib/
 }
 
 package_lib32-llvm-libs-git(){

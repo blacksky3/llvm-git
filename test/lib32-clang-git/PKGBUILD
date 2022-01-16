@@ -4,14 +4,14 @@
 pkgname=lib32-clang-git
 pkgdesc='C language family frontend for LLVM (32-bit) (git version)'
 url='https://clang.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411229.g5f782d25a742
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
 depends=('lib32-llvm-libs' 'gcc-multilib')
 makedepends=('lib32-llvm' 'cmake' 'ninja' 'python')
-conflicts=('clang')
-provides=('clang')
+conflicts=('lib32-clang')
+provides=('lib32-clang')
 source=("llvm-project::git+https://github.com/llvm/llvm-project.git")
 sha256sums=("SKIP")
 

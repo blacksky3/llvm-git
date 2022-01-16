@@ -6,7 +6,7 @@
 pkgbase=libc++-git
 pkgname=('libc++-git' 'libc++abi-git' 'libc++experimental-git')
 url='https://libcxx.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411227.g7cbbef5bbc35
 pkgrel=1
 license=('custom:Apache 2.0 with LLVM Exception')
 arch=('x86_64')
@@ -70,6 +70,8 @@ package_libc++-git(){
 package_libc++abi-git(){
   pkgdesc='Low level support for the LLVM C++ standard library.'
   options=('staticlibs')
+  conflicts=('libc++abi')
+  provides=('libc++abi')
 
   DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxxabi
 

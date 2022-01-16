@@ -5,7 +5,7 @@
 pkgname=compiler-rt-git
 pkgdesc='Compiler runtime libraries for clang (git version)'
 url='https://compiler-rt.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411226.g9f237c9e7d88
 _pkgver=14.0.0
 pkgrel=1
 arch=('x86_64')
@@ -50,6 +50,6 @@ build(){
 package(){
   DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/compiler-rt/build/ install
 
-  install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
+  install -Dm644 ${srcdir}/llvm-project/compiler-rt/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${srcdir}/llvm-project/compiler-rt/CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
 }

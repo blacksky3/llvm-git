@@ -5,7 +5,7 @@
 pkgname=lldb-git
 pkgdesc='Next generation, high-performance debugger (git version)'
 url='https://lldb.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411226.g9f237c9e7d88
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')

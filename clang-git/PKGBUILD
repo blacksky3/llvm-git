@@ -5,7 +5,7 @@
 pkgname=clang-git
 pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
-pkgver=14.0.0
+pkgver=14.0.0.r411226.g9f237c9e7d88
 pkgrel=1
 arch=('x86_64')
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -57,15 +57,15 @@ pkgver() {
 }
 
 prepare(){
-  cp -r ${scrdir}/llvm-project/clang-tools-extra llvm-project/clang/tools/extra
+  cp -r ${srcdir}/llvm-project/clang-tools-extra ${srcdir}/llvm-project/clang/tools/extra
   
   # Attempt to convert script to Python 3
   2to3 -wn --no-diffs \
-    ${scrdir}/llvm-project/clang/tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
+    ${srcdir}/llvm-project/clang/tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 }
 
 build() {
-  cd ${scrdir}/llvm-project/clang
+  cd ${srcdir}/llvm-project/clang
 
   rm -rf build
 
@@ -105,7 +105,7 @@ _python_optimize(){
 }
 
 package(){
-  DESTDIR="$pkgdir" ninja -C llvm-project/clang/build/ install-distribution
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
 
   install -Dm644 "$srcdir/llvm-project/clang/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/clang/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
