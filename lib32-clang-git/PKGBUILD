@@ -38,7 +38,7 @@ _get_distribution_components() {
 }
 
 pkgver() {
-  cd ${scrdir}/llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -52,7 +52,7 @@ pkgver() {
 }
 
 build() {
-  cd ${scrdir}/llvm-project/clang
+  cd ${srcdir}/llvm-project/clang
 
   rm -rf build
 
@@ -88,7 +88,7 @@ build() {
 }
 
 package() {
-  cd ${scrdir}/llvm-project/clang
+  cd ${srcdir}/llvm-project/clang
 
   DESTDIR="$pkgdir" ninja install-distribution
   rm -rf "$pkgdir"/usr/{bin,include,libexec,share}
