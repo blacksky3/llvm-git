@@ -17,7 +17,7 @@ source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
 md5sums=('SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -31,7 +31,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project
+  cd ${srcdir}/llvm-project
 
   rm -rf build-libc++
 
@@ -53,7 +53,7 @@ package_libc++-git(){
   conflicts=('libc++')
   provides=('libc++')
 
-  DESTDIR="$pkgdir" ninja -C llvm-project/build-libc++/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/build-libc++/ install
 
   install -Dm0644 llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
@@ -65,7 +65,7 @@ package_libc++experimental-git(){
   conflicts=('libc++experimental')
   provides=('libc++experimental')
 
-  install -Dm0644 -t "$pkgdir"/usr/lib/ llvm-project/build-libc++/lib/libc++experimental.a
-  install -Dm0644 llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
-  install -Dm0644 llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/llvm-project/build-libc++/lib/libc++experimental.a
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
 }

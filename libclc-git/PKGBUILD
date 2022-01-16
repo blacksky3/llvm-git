@@ -15,7 +15,7 @@ source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
 md5sums=('SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -29,7 +29,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project/libclc
+  cd ${srcdir}/llvm-project/libclc
 
   rm -rf build
 
@@ -49,8 +49,8 @@ build(){
 }
 
 package(){
-  DESTDIR="$pkgdir" ninja -C llvm-project/libclc/build/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/libclc/build/ install
 
-  install -Dm644 llvm-project/libclc/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 llvm-project/libclc/CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
+  install -Dm644 ${srcdir}/llvm-project/libclc/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${srcdir}/llvm-project/libclc/CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
 }

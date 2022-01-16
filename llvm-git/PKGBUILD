@@ -17,7 +17,7 @@ md5sums=('SKIP'
          'SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -31,7 +31,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   rm -rf build
 

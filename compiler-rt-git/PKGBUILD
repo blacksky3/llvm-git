@@ -48,9 +48,7 @@ build(){
 }
 
 package(){
-  cd ${srcdir}/llvm-project/compiler-rt
-
-  DESTDIR="$pkgdir" ninja -C build/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/compiler-rt/build/ install
 
   install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 CREDITS.TXT "$pkgdir/usr/share/licenses/$pkgname/CREDITS"

@@ -2,17 +2,6 @@
 #Credits: Daniel Bermond <dbermond@archlinux.org>
 #Credits: Bruno Pagani <archange@archlinux.org>
 
-#######################################
-
-#Set '1' to build with GCC
-#Set '2' to build with CLANG
-#Default is empty. It will build with GCC. To build with different compiler just use : env _compiler=(1 or 2) makepkg -s
-if [ -z ${_compiler+x} ]; then
-  _compiler=
-fi
-
-#######################################
-
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
@@ -28,7 +17,7 @@ source=('SPIRV-LLVM-Translator::git+https://github.com/KhronosGroup/SPIRV-LLVM-T
 md5sums=('SKIP')
 
 pkgver(){
-  cd SPIRV-LLVM-Translator
+  cd ${srcdir}/SPIRV-LLVM-Translator
 
   echo 14.0.0.r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
 }
@@ -38,18 +27,8 @@ prepare(){
 }
 
 build() {
-if [[ $_compiler = "1" ]]; then
-  export CC="gcc -m64"
-  export CXX="g++ -m64"
-elif [[ $_compiler = "2" ]]; then
-  export CC="clang -m64"
-  export CXX="clang++ -m64"
-else
-  export CC="gcc -m64"
-  export CXX="g++ -m64"
-fi
 
-  cd SPIRV-LLVM-Translator
+  cd ${srcdir}/SPIRV-LLVM-Translator
 
   rm -rf build
 
@@ -68,9 +47,9 @@ fi
 }
 
 package(){
-    DESTDIR="${pkgdir}" ninja -C SPIRV-LLVM-Translator/build/ install
+    DESTDIR="${pkgdir}" ninja -C ${srcdir}/SPIRV-LLVM-Translator/build/ install
 
-    install -Dm755 SPIRV-LLVM-Translator/build/tools/llvm-spirv/llvm-spirv -t "${pkgdir}"/usr/bin
+    install -Dm755 ${srcdir}/SPIRV-LLVM-Translator/build/tools/llvm-spirv/llvm-spirv -t "${pkgdir}"/usr/bin
 
-    install -Dm644 SPIRV-LLVM-Translator/LICENSE.TXT -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+    install -Dm644 ${srcdir}/SPIRV-LLVM-Translator/LICENSE.TXT -t "${pkgdir}"/usr/share/licenses/${pkgname}/
 }

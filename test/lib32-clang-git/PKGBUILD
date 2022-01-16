@@ -2,7 +2,7 @@
 # Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
 
 pkgname=lib32-clang-git
-pkgdesc='C language family frontend for LLVM (32-bit)'
+pkgdesc='C language family frontend for LLVM (32-bit) (git version)'
 url='https://clang.llvm.org/'
 pkgver=14.0.0
 pkgrel=1
@@ -88,14 +88,10 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/llvm-project/clang
-
-  DESTDIR="$pkgdir" ninja install-distribution
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
   rm -rf "$pkgdir"/usr/{bin,include,libexec,share}
 
 
   install -Dm644 "$srcdir/llvm-project/clang/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/clang/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
 }
-
-# vim:set ts=2 sw=2 et:

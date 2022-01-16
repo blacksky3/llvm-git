@@ -18,7 +18,7 @@ source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
 md5sums=('SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -32,7 +32,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project/lld
+  cd ${srcdir}/llvm-project/lld
 
   rm -rf build
 
@@ -52,15 +52,13 @@ build(){
 }
 
 package(){
-  cd llvm-project/lld
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/lld/build install
 
-  DESTDIR="$pkgdir" ninja -C build install
-
-  install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 CODE_OWNERS.TXT "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
+  install -Dm644 ${srcdir}/llvm-project/lld/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${srcdir}/llvm-project/lld/CODE_OWNERS.TXT "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
 
   # https://bugs.llvm.org/show_bug.cgi?id=42455
-  install -Dm644 -t "$pkgdir/usr/share/man/man1" docs/ld.lld.1
+  install -Dm644 -t "$pkgdir/usr/share/man/man1" ${srcdir}/llvm-project/lld/docs/ld.lld.1
 
   # Remove documentation sources
   #rm -r "$pkgdir"/usr/share/doc/lld/html/{_sources,.buildinfo}

@@ -17,7 +17,7 @@ source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
 md5sums=('SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -31,7 +31,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project/lldb
+  cd ${srcdir}/llvm-project/lldb
 
   rm -rf build
 
@@ -48,13 +48,13 @@ build(){
 }
 
 package(){
-  DESTDIR="$pkgdir" ninja -C llvm-project/lldb/build/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/lldb/build/ install
 
-  install -Dm644 llvm-project/lldb/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 llvm-project/lldb/CODE_OWNERS.txt "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
+  install -Dm644 ${srcdir}/llvm-project/lldb/LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${srcdir}/llvm-project/lldb/CODE_OWNERS.txt "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
 
-  #install -Dm644 llvm-project/lldb/build/docs/man/lldb.1 "$pkgdir/usr/share/man/man1/lldb.1"
-  #install -Dm644 llvm-project/lldb/build/docs/man/lldb-server.1 "$pkgdir/usr/share/man/man1/lldb-server.1"
+  #install -Dm644 ${srcdir}/llvm-project/lldb/build/docs/man/lldb.1 "$pkgdir/usr/share/man/man1/lldb.1"
+  #install -Dm644 ${srcdir}/llvm-project/lldb/build/docs/man/lldb-server.1 "$pkgdir/usr/share/man/man1/lldb-server.1"
 
   # Compile Python scripts
   python3 -m compileall "$pkgdir"

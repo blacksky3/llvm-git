@@ -16,7 +16,7 @@ source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
 md5sums=('SKIP')
 
 pkgver() {
-  cd llvm-project/llvm
+  cd ${srcdir}/llvm-project/llvm
 
   # This will almost match the output of `llvm-config --version` when the
   # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
@@ -30,7 +30,7 @@ pkgver() {
 }
 
 build(){
-  cd llvm-project/openmp
+  cd ${srcdir}/llvm-project/openmp
 
   rm -rf build
 
@@ -44,9 +44,7 @@ build(){
 }
 
 package(){
-  cd llvm-project/openmp
-
-  DESTDIR="$pkgdir" ninja -C build/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/openmpbuild/ install
 
   install -Dm644 "$srcdir/llvm-project/openmp/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/openmp/CREDITS.txt" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
