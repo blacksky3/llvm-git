@@ -47,6 +47,10 @@ build() {
   ninja -C build llvm-spirv
 }
 
+check(){
+    LD_LIBRARY_PATH="${srcdir}/SPIRV-LLVM-Translator" ninja -C build test
+}
+
 package(){
     DESTDIR="${pkgdir}" ninja -C ${srcdir}/SPIRV-LLVM-Translator/build/ install
 
