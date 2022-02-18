@@ -38,6 +38,7 @@ build(){
   cmake -H. -G Ninja -Bbuild \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_SKIP_RPATH=ON \
   -DLLVM_LIBDIR_SUFFIX=32 \
   -DCMAKE_C_FLAGS:STRING=-m32 \
   -DCMAKE_CXX_FLAGS:STRING=-m32 \
