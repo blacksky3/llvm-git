@@ -51,6 +51,11 @@ build(){
   ninja -C build/
 }
 
+check(){
+  cd ${srcdir}/llvm-project/polly/build
+  ninja check-polly
+}
+
 package(){
   DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/polly/build/ install
 
