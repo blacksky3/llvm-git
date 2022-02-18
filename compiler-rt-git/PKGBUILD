@@ -42,6 +42,7 @@ build(){
   cmake -H. -G Ninja -Bbuild \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_SKIP_RPATH=ON \
   -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/$_pkgver
 
   ninja -C build
