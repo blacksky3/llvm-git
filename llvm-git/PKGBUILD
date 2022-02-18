@@ -38,6 +38,7 @@ build(){
   cmake -H. -G Ninja -Bbuild \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_SKIP_RPATH=ON \
   -DLLVM_HOST_TRIPLE=$CHOST \
   -DLLVM_BUILD_LLVM_DYLIB=ON \
   -DLLVM_LINK_LLVM_DYLIB=ON \
@@ -53,6 +54,11 @@ build(){
 
   ninja -C build all
   ninja -C build ocaml_doc
+}
+
+check(){
+  cd ${srcdir}//llvm-project/llvm/build
+  LD_LIBRARY_PATH=$PWD/lib ninja check
 }
 
 package_llvm-git(){
