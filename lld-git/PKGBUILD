@@ -52,6 +52,11 @@ build(){
   ninja -C build
 }
 
+check(){
+  cd ${srcdir}/llvm-project/lld/build
+  ninja check-lld
+}
+
 package(){
   DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/lld/build install
 
