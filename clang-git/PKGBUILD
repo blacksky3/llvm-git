@@ -76,6 +76,7 @@ build() {
   cmake .. -G Ninja \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_SKIP_RPATH=ON
   -DPYTHON_EXECUTABLE=/usr/bin/python \
   -DLLVM_LINK_LLVM_DYLIB=ON \
   -DCLANG_LINK_CLANG_DYLIB=ON \
@@ -96,6 +97,11 @@ build() {
 
   cmake .. "${cmake_args[@]}"
   ninja
+}
+
+check(){
+  cd ${srcdir}/llvm-project/clang/build
+  LD_LIBRARY_PATH=$PWD/lib ninja check-clang{,-tools}
 }
 
 _python_optimize(){
