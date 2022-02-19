@@ -19,7 +19,7 @@ md5sums=('SKIP')
 pkgver(){
   cd ${srcdir}/SPIRV-LLVM-Translator
 
-  echo 14.0.0.r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
+  echo 15.0.0.r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
 }
 
 prepare(){
