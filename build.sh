@@ -30,8 +30,6 @@ cd libclc-git && makepkg -si --noconfirm && cd ..
 
 cd libc++-git && makepkg -si --noconfirm && cd ..
 
-cd libc++abi-git && makepkg -si --noconfirm && cd ..
-
 cd openmp-git && makepkg -si --noconfirm && cd ..
 
 cd lib32-llvm-git && makepkg -si --noconfirm && cd ..
