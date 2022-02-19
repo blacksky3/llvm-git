@@ -34,6 +34,8 @@ cd openmp-git && makepkg -si --noconfirm && cd ..
 
 cd lib32-llvm-git && makepkg -si --noconfirm && cd ..
 
+cd lib32-clang-git && makepkg -si --noconfirm && cd ..
+
 # make a copy of every pkg in package-$(date -I)/ dir
 
 mkdir package-$(date -I)
