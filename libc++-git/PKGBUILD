@@ -62,6 +62,9 @@ package_libc++-git(){
   provides=('libc++')
 
   DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxx
+  
+  # remove file provided by libcxxabi
+  rm -rf ${pkgdir}/usr/include/c++/v1/*cxxabi*
 
   install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
