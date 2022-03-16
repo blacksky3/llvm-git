@@ -65,7 +65,7 @@ build(){
 }
 
 check(){
-  cd ${srcdir}//llvm-project/llvm/build
+  cd ${srcdir}/llvm-project/llvm/build
   LD_LIBRARY_PATH=$PWD/lib ninja check
 }
 
