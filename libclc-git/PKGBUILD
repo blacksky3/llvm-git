@@ -13,13 +13,13 @@ pkgdesc='Library requirements of the OpenCL C programming languag (git version)'
 url='https://libclc.llvm.org/'
 pkgver=14.0.0.r411227.g7cbbef5bbc35
 pkgrel=1
-arch=('x86_64')
-license=('MIT')
-makedepends=('clang' 'llvm' 'cmake' 'ninja' 'python' 'git' 'spirv-llvm-translator')
-conflicts=('libclc')
-provides=('libclc')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+arch=(x86_64)
+license=(MIT)
+makedepends=(clang llvm cmake ninja python git spirv-llvm-translator git)
+conflicts=(libclc)
+provides=(libclc)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm
@@ -43,14 +43,6 @@ build(){
   cmake -H. -G Ninja -Bbuild \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX=/usr
-
-  # workarround for issue : https://bugs.llvm.org/show_bug.cgi?id=49431
-  #cmake -H. -G Ninja -Bbuild \
-  #-DCMAKE_BUILD_TYPE=Release \
-  #-DCMAKE_INSTALL_PREFIX=/usr \
-  #-DCMAKE_LLAsm_COMPILER_FORCED=ON \
-  #-DLIBCLC_TARGETS_TO_BUILD="clspv--;spirv-mesa3d-;spirv64-mesa3d-"
-  #-DLIBCLC_TARGETS_TO_BUILD="amdgcn--;amdgcn--amdhsa;clspv--;r600--;nvptx--;nvptx64--;nvptx--nvidiacl;nvptx64--nvidiacl;spirv-mesa3d-;spirv64-mesa3d-"
 
   ninja -C build
 }

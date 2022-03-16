@@ -14,15 +14,15 @@ pkgdesc='Linker from the LLVM project (git version)'
 url='https://lld.llvm.org/'
 pkgver=14.0.0.r411225.g37e6496c800b
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('llvm-libs')
-makedepends=('llvm' 'cmake' 'ninja' 'python-sphinx')
-options=('!lto') # LTO causes a couple of test failures
-conflicts=('lld')
-provides=('lld')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+depends=(llvm-libs)
+makedepends=(llvm cmake ninja python-sphinx git)
+options=(!lto) # LTO causes a couple of test failures
+conflicts=(lld)
+provides=(lld)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm
@@ -50,9 +50,10 @@ build(){
   -DPYTHON_EXECUTABLE=/usr/bin/python \
   -DLLVM_LINK_LLVM_DYLIB=ON \
   -DLLVM_INCLUDE_TESTS=ON \
-  -DLLVM_BUILD_TESTS=OFF \
-  -DLLVM_BUILD_DOCS=OFF \
-  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLVM_BUILD_TESTS=ON \
+  -DLLVM_BUILD_DOCS=ON \
+  -DLLVM_ENABLE_SPHINX=ON \
+  -DSPHINX_WARNINGS_AS_ERRORS=OFF \
   -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
   -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
 
@@ -74,5 +75,5 @@ package(){
   install -Dm644 -t "$pkgdir/usr/share/man/man1" ${srcdir}/llvm-project/lld/docs/ld.lld.1
 
   # Remove documentation sources
-  #rm -r "$pkgdir"/usr/share/doc/lld/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/lld/html/{_sources,.buildinfo}
 }

@@ -14,18 +14,18 @@ pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
 pkgver=14.0.0.r411226.g9f237c9e7d88
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('llvm-libs' 'gcc' 'compiler-rt')
-makedepends=('llvm' 'cmake' 'ninja' 'python-sphinx' 'python')
+depends=(llvm-libs gcc compiler-rt)
+makedepends=(llvm cmake ninja python-sphinx python git)
 optdepends=('openmp: OpenMP support in clang with -fopenmp'
             'python: for scan-view and git-clang-format'
             'llvm: referenced by some clang headers')
-conflicts=('clang-analyzer' 'clang-tools-extra' 'clang')
-replaces=('clang-analyzer' 'clang-tools-extra')
-provides=('clang-analyzer' 'clang-tools-extra' 'clang')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+conflicts=(clang-analyzer clang-tools-extra clang)
+replaces=(clang-analyzer clang-tools-extra)
+provides=(clang-analyzer clang-tools-extra clang)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
 # installing static libraries; inspired by Gentoo
@@ -65,7 +65,7 @@ pkgver() {
 
 prepare(){
   cp -r ${srcdir}/llvm-project/clang-tools-extra ${srcdir}/llvm-project/clang/tools/extra
-  
+
   # Attempt to convert script to Python 3
   2to3 -wn --no-diffs \
     ${srcdir}/llvm-project/clang/tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
@@ -88,11 +88,11 @@ build() {
   -DLLVM_LINK_LLVM_DYLIB=ON \
   -DCLANG_LINK_CLANG_DYLIB=ON \
   -DLLVM_ENABLE_RTTI=ON \
-  -DLLVM_BUILD_TESTS=OFF \
-  -DLLVM_INCLUDE_DOCS=OFF \
-  -DCLANG_INCLUDE_DOCS=OFF \
-  -DLLVM_BUILD_DOCS=OFF \
-  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLVM_BUILD_TESTS=ON \
+  -DLLVM_INCLUDE_DOCS=ON \
+  -DCLANG_INCLUDE_DOCS=ON \
+  -DLLVM_BUILD_DOCS=ON \
+  -DLLVM_ENABLE_SPHINX=ON \
   -DSPHINX_WARNINGS_AS_ERRORS=OFF \
   -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
   -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
@@ -124,9 +124,8 @@ package(){
   install -Dm644 "$srcdir/llvm-project/clang/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
 
   # Remove documentation sources
-  #rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
-  #rm -r "$pkgdir"/usr/share/doc/clang/html/{_sources,.buildinfo}
-  
+  rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
+
   # Move scanbuild-py into site-packages and install Python bindings
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d "$pkgdir/$site_packages"

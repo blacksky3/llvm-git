@@ -14,14 +14,14 @@ pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LL
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
 pkgver=14.0.0.r1467.g984ce6e3
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=(custom)
-depends=('llvm-libs')
-makedepends=('cmake' 'llvm' 'spirv-tools' 'spirv-headers' 'python' 'python-setuptools' 'clang' 'make' 'ninja' 'gcc' 'gcc-libs')
-conflicts=('spirv-llvm-translator')
-provides=('spirv-llvm-translator')
-source=('SPIRV-LLVM-Translator::git+https://github.com/KhronosGroup/SPIRV-LLVM-Translator.git')
-md5sums=('SKIP')
+depends=(llvm-libs)
+makedepends=(cmake llvm spirv-tools spirv-headers python python-setuptools clang make ninja gcc gcc-libs git)
+conflicts=(spirv-llvm-translator)
+provides=(spirv-llvm-translator)
+source=(git+https://github.com/KhronosGroup/SPIRV-LLVM-Translator.git)
+md5sums=(SKIP)
 
 pkgver(){
   cd ${srcdir}/SPIRV-LLVM-Translator

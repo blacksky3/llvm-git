@@ -12,16 +12,17 @@
 # Contributor: MThinkCpp <mtc [dot] maintainer [at] outlook [dot] com>
 
 pkgbase=libc++-git
-pkgname=('libc++-git' 'libc++abi-git' 'libc++experimental-git')
+pkgname=(libc++-git libc++abi-git libc++experimental-git)
 url='https://libcxx.llvm.org/'
 pkgver=14.0.0.r411227.g7cbbef5bbc35
 pkgrel=1
 license=('custom:Apache 2.0 with LLVM Exception')
-arch=('x86_64')
-depends=('gcc-libs')
-makedepends=('clang' 'cmake' 'llvm' 'libunwind' 'ninja' 'python')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+arch=(x86_64)
+depends=(gcc-libs)
+makedepends=(clang cmake llvm libunwind ninja python git)
+options=(!lto)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver(){
   cd ${srcdir}/llvm-project/llvm
@@ -55,22 +56,22 @@ build(){
     -DCMAKE_CXX_COMPILER=clang++ \
     -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=NO \
     "$srcdir"/llvm-project/llvm
-    
-    ninja cxx 
+
+    ninja cxx
     ninja cxx_experimental
 }
 
 # Do not remove the space before the () or commitpkg will
 # accidentally to run this function on the system (!!!)
 package_libc++-git(){
-  pkgdesc='LLVM C++ standard library.'
-  depends=('libc++abi')
-  options=('staticlibs')
-  conflicts=('libc++')
-  provides=('libc++')
+  pkgdesc='LLVM C++ standard library. (git version)'
+  depends=(libc++abi)
+  options=(staticlibs)
+  conflicts=(libc++)
+  provides=(libc++)
 
   DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxx
-  
+
   # remove file provided by libcxxabi
   rm -rf ${pkgdir}/usr/include/c++/v1/*cxxabi*
 
@@ -79,10 +80,10 @@ package_libc++-git(){
 }
 
 package_libc++abi-git(){
-  pkgdesc='Low level support for the LLVM C++ standard library.'
-  options=('staticlibs')
-  conflicts=('libc++abi')
-  provides=('libc++abi')
+  pkgdesc='Low level support for the LLVM C++ standard library. (git version)'
+  options=(staticlibs)
+  conflicts=(libc++abi)
+  provides=(libc++abi)
 
   DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxxabi
 
@@ -91,10 +92,10 @@ package_libc++abi-git(){
 }
 
 package_libc++experimental-git(){
-  pkgdesc='LLVM C++ experimental library.'
-  depends=('libc++')
-  conflicts=('libc++experimental')
-  provides=('libc++experimental')
+  pkgdesc='LLVM C++ experimental library. (git version)'
+  depends=(libc++)
+  conflicts=(libc++experimental)
+  provides=(libc++experimental)
 
   install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/libc++experimental.a
 

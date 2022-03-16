@@ -6,22 +6,22 @@
 #                                  |___/
 
 #Maintainer: blacksky3 <blacksky3@tuta.io> <https://github.com/blacksky3>
-# Maintainer: Evangelos Foutras <evangelos@foutrelis.com>
-# Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
+#Credits: Evangelos Foutras <evangelos@foutrelis.com>
+#Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
 
 pkgname=lib32-clang-git
 pkgdesc='C language family frontend for LLVM (32-bit) (git version)'
 url='https://clang.llvm.org/'
 pkgver=14.0.0.r411229.g5f782d25a742
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('lib32-llvm-libs' 'gcc-multilib')
-makedepends=('lib32-llvm' 'cmake' 'ninja' 'python')
-conflicts=('lib32-clang')
-provides=('lib32-clang')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git")
-sha256sums=("SKIP")
+depends=(lib32-llvm-libs gcc-multilib)
+makedepends=(lib32-llvm cmake ninja python git)
+conflicts=(lib32-clang)
+provides=(lib32-clang)
+source=(git+https://github.com/llvm/llvm-project.git)
+sha256sums=(SKIP)
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
 # installing static libraries; inspired by Gentoo

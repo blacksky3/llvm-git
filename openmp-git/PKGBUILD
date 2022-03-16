@@ -13,14 +13,14 @@ pkgdesc='LLVM OpenMP Runtime Library (git version)'
 url='https://openmp.llvm.org/'
 pkgver=14.0.0.r411227.g7cbbef5bbc35
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('glibc' 'libelf' 'libffi')
-makedepends=('cmake' 'ninja')
-conflicts=('openmp')
-provides=('openmp')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+depends=(glibc libelf libffi)
+makedepends=(cmake ninja git)
+conflicts=(openmp)
+provides=(openmp)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm

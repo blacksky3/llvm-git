@@ -10,18 +10,19 @@
 #Credits: Jan "heftig" Steffens <jan.steffens@gmail.com>
 
 pkgbase=llvm-git
-pkgname=("$pkgbase" 'llvm-libs-git' 'llvm-ocaml-git')
+pkgname=(llvm-git llvm-libs-git llvm-ocaml-git)
 url='https://llvm.org/'
 pkgver=14.0.0.r411225.g37e6496c800b
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-makedepends=('cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 'ocaml' 'ocaml-ctypes' 'ocaml-findlib' 'python-setuptools' 'python-psutil' 'python-sphinx' 'python-recommonmark')
-options=('staticlibs' '!lto') # Getting thousands of test failures with LTO
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main"
-        "llvm-config.h")
-md5sums=('SKIP'
-         'SKIP')
+makedepends=(cmake ninja libffi libedit ncurses libxml2 ocaml ocaml-ctypes ocaml-findlib
+             python-setuptools python-psutil python-sphinx python-recommonmark git)
+options=(staticlibs !lto) # Getting thousands of test failures with LTO
+source=(git+https://github.com/llvm/llvm-project.git#branch=main
+        llvm-config.h)
+md5sums=(SKIP
+         SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm
@@ -53,8 +54,8 @@ build(){
   -DLLVM_ENABLE_RTTI=ON \
   -DLLVM_ENABLE_FFI=ON \
   -DLLVM_BUILD_TESTS=ON \
-  -DLLVM_BUILD_DOCS=OFF \
-  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLVM_BUILD_DOCS=ON \
+  -DLLVM_ENABLE_SPHINX=ON \
   -DLLVM_ENABLE_DOXYGEN=OFF \
   -DSPHINX_WARNINGS_AS_ERRORS=OFF \
   -DLLVM_BINUTILS_INCDIR=/usr/include
@@ -70,9 +71,9 @@ check(){
 
 package_llvm-git(){
   pkgdesc='Collection of modular and reusable compiler and toolchain technologies (git version)'
-  depends=('llvm-libs' 'perl')
-  conflicts=('llvm')
-  provides=('llvm')
+  depends=(llvm-libs perl)
+  conflicts=(llvm)
+  provides=(llvm)
 
   cd llvm-project/llvm/build
 
@@ -84,7 +85,7 @@ package_llvm-git(){
   popd
 
   # Remove documentation sources
-  #rm -r "$pkgdir"/usr/share/doc/llvm/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/llvm/html/{_sources,.buildinfo}
 
   # The runtime libraries go into llvm-libs
   mv -f "$pkgdir"/usr/lib/lib{LLVM,LTO,Remarks}*.so* "$srcdir"
@@ -108,16 +109,13 @@ package_llvm-git(){
   install -Dm644 "$srcdir/llvm-project/llvm/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/llvm/CREDITS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
   install -Dm644 "$srcdir/llvm-project/llvm/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
-
-  # remove doc dir
-  rm -rf "$pkgdir"/usr/share/doc
 }
 
 package_llvm-libs-git(){
   pkgdesc='LLVM runtime libraries'
-  depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2')
-  conflicts=('llvm-libs')
-  provides=('llvm-libs')
+  depends=(gcc-libs zlib libffi libedit ncurses libxml2)
+  conflicts=(llvm-libs)
+  provides=(llvm-libs)
 
   install -d "$pkgdir/usr/lib"
   cp -P \
@@ -137,14 +135,13 @@ package_llvm-libs-git(){
 
 package_llvm-ocaml-git(){
   pkgdesc='OCaml bindings for LLVM (git version)'
-  depends=('llvm' "ocaml" 'ocaml-ctypes')
-  conflicts=('llvm-ocaml')
-  provides=('llvm-ocaml')
+  depends=(llvm ocaml ocaml-ctypes)
+  conflicts=(llvm-ocaml)
+  provides=(llvm-ocaml)
 
-  #install -d "$pkgdir"/{usr/lib,usr/share/doc/$pkgname}
-  install -d "$pkgdir"/usr/lib
+  install -d "$pkgdir"/{usr/lib,usr/share/doc/llvm-ocaml}
   cp -a "$srcdir/ocaml.lib" "$pkgdir/usr/lib/ocaml"
-  #cp -a "$srcdir/ocaml.doc" "$pkgdir/usr/share/doc/$pkgname/html"
+  cp -a "$srcdir/ocaml.doc" "$pkgdir/usr/share/doc/llvm-ocaml/html"
 
   install -Dm644 "$srcdir/llvm-project/llvm/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/llvm/CREDITS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"

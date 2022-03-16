@@ -15,17 +15,17 @@ url='https://compiler-rt.llvm.org/'
 pkgver=14.0.0.r411226.g9f237c9e7d88
 _pkgver=15.0.0
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('gcc-libs')
-makedepends=('llvm' 'cmake' 'ninja' 'python')
+depends=(gcc-libs)
+makedepends=(llvm cmake ninja python git)
 # Build 32-bit compiler-rt libraries on x86_64 (FS#41911)
-makedepends_x86_64=('lib32-gcc-libs')
-options=('staticlibs')
-conflicts=('compiler-rt')
-provides=('compiler-rt')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+makedepends_x86_64=(lib32-gcc-libs)
+options=(staticlibs)
+conflicts=(compiler-rt)
+provides=(compiler-rt)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm

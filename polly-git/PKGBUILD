@@ -13,14 +13,14 @@ pkgdesc='High-level loop and data-locality optimizer and optimization infrastruc
 url='https://polly.llvm.org/'
 pkgver=14.0.0.r411225.g37e6496c800b
 pkgrel=1
-arch=('x86_64')
+arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
-depends=('gcc-libs')
-makedepends=('llvm' 'cmake' 'ninja' 'python-sphinx')
-conflicts=('polly')
-provides=('polly')
-source=("llvm-project::git+https://github.com/llvm/llvm-project.git#branch=main")
-md5sums=('SKIP')
+depends=(gcc-libs)
+makedepends=(llvm cmake ninja python-sphinx git)
+conflicts=(polly)
+provides=(polly)
+source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+md5sums=(SKIP)
 
 pkgver() {
   cd ${srcdir}/llvm-project/llvm
@@ -49,8 +49,8 @@ build(){
   -DCMAKE_INSTALL_PREFIX=/usr \
   -DLLVM_LINK_LLVM_DYLIB=ON \
   -DLLVM_BUILD_TESTS=ON \
-  -DLLVM_BUILD_DOCS=OFF \
-  -DLLVM_ENABLE_SPHINX=OFF \
+  -DLLVM_BUILD_DOCS=ON \
+  -DLLVM_ENABLE_SPHINX=ON \
   -DSPHINX_WARNINGS_AS_ERRORS=OFF \
   -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
   -DLLVM_BUILD_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
@@ -70,5 +70,5 @@ package(){
   install -Dm644 "$srcdir/llvm-project/polly/CREDITS.txt" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
 
   # Remove documentation sources
-  #rm -r "$pkgdir"/usr/share/doc/polly/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/polly/html/{_sources,.buildinfo}
 }
