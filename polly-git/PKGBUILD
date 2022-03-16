@@ -1,4 +1,11 @@
-#Maintainer: kevall474 <kevall474@tuta.io> <https://github.com/kevall474>
+# _     _            _        _          _____
+#| |__ | | __ _  ___| | _____| | ___   _|___ /
+#| '_ \| |/ _` |/ __| |/ / __| |/ / | | | |_ \
+#| |_) | | (_| | (__|   <\__ \   <| |_| |___) |
+#|_.__/|_|\__,_|\___|_|\_\___/_|\_\\__, |____/
+#                                  |___/
+
+#Maintainer: blacksky3 <blacksky3@tuta.io> <https://github.com/blacksky3>
 #Credits: Evangelos Foutras <evangelos@foutrelis.com>
 
 pkgname=polly-git
