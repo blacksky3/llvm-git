@@ -61,6 +61,10 @@ build(){
     ninja cxx_experimental
 }
 
+check(){
+  ninja -C ${srcdir}/build check-cxx check-cxxabi
+}
+
 # Do not remove the space before the () or commitpkg will
 # accidentally to run this function on the system (!!!)
 package_libc++-git(){
