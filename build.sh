@@ -1,16 +1,13 @@
 #!/usr/bin/bash
 
-#_                   _ _ _  _ _____ _  _
-#| | _______   ____ _| | | || |___  | || |
-#| |/ / _ \ \ / / _` | | | || |_ / /| || |_
-#|   <  __/\ V / (_| | | |__   _/ / |__   _|
-#|_|\_\___| \_/ \__,_|_|_|  |_|/_/     |_|
+# _     _            _        _          _____
+#| |__ | | __ _  ___| | _____| | ___   _|___ /
+#| '_ \| |/ _` |/ __| |/ / __| |/ / | | | |_ \
+#| |_) | | (_| | (__|   <\__ \   <| |_| |___) |
+#|_.__/|_|\__,_|\___|_|\_\___/_|\_\\__, |____/
+#                                  |___/
 
-###
-# my personnal build command (for my machine). Comment out for your machine.
-#sed -i '92s/ninja/ninja -j12/' clang-git/PKGBUILD
-#sed -i 's/ninja -C build all/ninja -j12 -C build all/' lib32-llvm-git/PKGBUILD
-###
+#Maintainer: blacksky3 <blacksky3@tuta.io> <https://github.com/blacksky3>
 
 cd llvm-git && makepkg -si --noconfirm && cd ..
 
