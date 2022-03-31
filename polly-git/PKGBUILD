@@ -11,7 +11,7 @@
 pkgname=polly-git
 pkgdesc='High-level loop and data-locality optimizer and optimization infrastructure for LLVM (git version)'
 url='https://polly.llvm.org/'
-pkgver=14.0.0.r411225.g37e6496c800b
+pkgver=15.0.0.r419656.g81f5c6270cdf
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -70,5 +70,9 @@ package(){
   install -Dm644 "$srcdir/llvm-project/polly/CREDITS.txt" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
 
   # Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/polly/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/Polly/polly/html/{_sources,.buildinfo}
+
+  # Polly docs to default Archlinux location
+  mv "$pkgdir/usr/share/doc/Polly/polly" "$pkgdir/usr/share/doc/polly"
+  rm -rf ${pkgdir}/usr/share/doc/Polly
 }
