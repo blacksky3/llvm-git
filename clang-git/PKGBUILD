@@ -12,7 +12,7 @@
 pkgname=clang-git
 pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
-pkgver=14.0.0.r411226.g9f237c9e7d88
+pkgver=15.0.0.r419656.g81f5c6270cdf
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -124,7 +124,13 @@ package(){
   install -Dm644 "$srcdir/llvm-project/clang/CODE_OWNERS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CODE_OWNERS"
 
   # Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/Clang/clang/html/{_sources,.buildinfo}
+  rm -r "$pkgdir"/usr/share/doc/Clang/clang-tools/html/{_sources,.buildinfo}
+
+  # Clang doc to default Archlinux location
+  mv "$pkgdir/usr/share/doc/Clang/clang" "$pkgdir/usr/share/doc/"
+  mv "$pkgdir/usr/share/doc/Clang/clang-tools" "$pkgdir/usr/share/doc"
+  rm -rf ${pkgdir}/usr/share/doc/Clang
 
   # Move scanbuild-py into site-packages and install Python bindings
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
