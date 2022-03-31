@@ -1,5 +1,3 @@
-#!/usr/bin/bash
-
 # _     _            _        _          _____
 #| |__ | | __ _  ___| | _____| | ___   _|___ /
 #| '_ \| |/ _` |/ __| |/ / __| |/ / | | | |_ \
@@ -9,7 +7,41 @@
 
 #Maintainer: blacksky3 <blacksky3@tuta.io> <https://github.com/blacksky3>
 
-source=pwd
+#!/usr/bin/bash
+
+source=${pwd}
+
+echo "${source}"
+
+# prepare
+
+# makepkg --verifysource to build all package with the same commit
+
+cd llvm-git && makepkg --verifysource && cd ${source}
+
+cd lld-git && makepkg --verifysource && cd ${source}
+
+cd polly-git && makepkg --verifysource && cd ${source}
+
+cd compiler-rt-git && makepkg --verifysource && cd ${source}
+
+cd clang-git && makepkg --verifysource && cd d ${source}
+
+cd lldb-git && makepkg --verifysource && cd ${source}
+
+cd spirv-llvm-translator-git && makepkg --verifysource && cd ${source}
+
+cd libclc-git && makepkg --verifysource && cd ${source}
+
+cd libc++-git && makepkg --verifysource && cd ${source}
+
+cd openmp-git && makepkg --verifysource && cd ${source}
+
+cd lib32-llvm-git && makepkg --verifysource && cd ${source}
+
+cd lib32-clang-git && makepkg --verifysource && cd ${source}
+
+# build
 
 cd llvm-git && makepkg -si --noconfirm --nocheck && cd ${source}
 
@@ -35,11 +67,11 @@ cd lib32-llvm-git && makepkg -si --noconfirm && cd ${source}
 
 cd lib32-clang-git && makepkg -si --noconfirm && cd ${source}
 
-# make a copy of every pkg in package-$(date -I)/ dir
+# make a copy of every pkg in package/ dir
 
-mkdir package-$(date -I)
+mkdir package
 
-cp -v */*.pkg.tar.zst package-$(date -I)/
+cp -v */*.pkg.tar.zst package/
 
 # clean build dir
 
