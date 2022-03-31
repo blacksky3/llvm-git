@@ -9,29 +9,31 @@
 
 #Maintainer: blacksky3 <blacksky3@tuta.io> <https://github.com/blacksky3>
 
-cd llvm-git && makepkg -si --noconfirm --nocheck && cd ..
+source=pwd
 
-cd lld-git && makepkg -si --noconfirm --nocheck && cd ..
+cd llvm-git && makepkg -si --noconfirm --nocheck && cd ${source}
 
-cd polly-git && makepkg -si --noconfirm --nocheck && cd ..
+cd lld-git && makepkg -si --noconfirm --nocheck && d ${source}
 
-cd compiler-rt-git && makepkg -si --noconfirm && cd ..
+cd polly-git && makepkg -si --noconfirm --nocheck && d ${source}
 
-cd clang-git && makepkg -si --noconfirm --nocheck && cd ..
+cd compiler-rt-git && makepkg -si --noconfirm && cd ${source}
 
-cd lldb-git && makepkg -si --noconfirm && cd ..
+cd clang-git && makepkg -si --noconfirm --nocheck && cd d ${source}
 
-cd spirv-llvm-translator-git && makepkg -si --noconfirm --nocheck && cd ..
+cd lldb-git && makepkg -si --noconfirm && cd ${source}
 
-cd libclc-git && makepkg -si --noconfirm && cd ..
+cd spirv-llvm-translator-git && makepkg -si --noconfirm --nocheck && cd ${source}
 
-cd libc++-git && makepkg -si --noconfirm --nocheck && cd ..
+cd libclc-git && makepkg -si --noconfirm && cd ${source}
 
-cd openmp-git && makepkg -si --noconfirm && cd ..
+cd libc++-git && makepkg -si --noconfirm --nocheck && cd ${source}
 
-cd lib32-llvm-git && makepkg -si --noconfirm && cd ..
+cd openmp-git && makepkg -si --noconfirm && cd ${source}
 
-cd lib32-clang-git && makepkg -si --noconfirm && cd ..
+cd lib32-llvm-git && makepkg -si --noconfirm && cd ${source}
+
+cd lib32-clang-git && makepkg -si --noconfirm && cd ${source}
 
 # make a copy of every pkg in package-$(date -I)/ dir
 
