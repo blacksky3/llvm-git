@@ -25,7 +25,7 @@ cd polly-git && makepkg --verifysource && cd ${source}
 
 cd compiler-rt-git && makepkg --verifysource && cd ${source}
 
-cd clang-git && makepkg --verifysource && cd d ${source}
+cd clang-git && makepkg --verifysource && cd ${source}
 
 cd lldb-git && makepkg --verifysource && cd ${source}
 
@@ -43,29 +43,29 @@ cd lib32-clang-git && makepkg --verifysource && cd ${source}
 
 # build
 
-cd llvm-git && makepkg -si --noconfirm --nocheck && cd ${source}
+cd llvm-git && makepkg -si --nocheck && cd ${source}
 
-cd lld-git && makepkg -si --noconfirm --nocheck && d ${source}
+cd lld-git && makepkg -si --nocheck && cd ${source}
 
-cd polly-git && makepkg -si --noconfirm --nocheck && d ${source}
+cd polly-git && makepkg -si --nocheck && cd ${source}
 
-cd compiler-rt-git && makepkg -si --noconfirm && cd ${source}
+cd compiler-rt-git && makepkg -si && cd ${source}
 
-cd clang-git && makepkg -si --noconfirm --nocheck && cd d ${source}
+cd clang-git && makepkg -si --nocheck && cd ${source}
 
 cd lldb-git && makepkg -si --noconfirm && cd ${source}
 
-cd spirv-llvm-translator-git && makepkg -si --noconfirm --nocheck && cd ${source}
+cd spirv-llvm-translator-git && makepkg -si --nocheck && cd ${source}
 
-cd libclc-git && makepkg -si --noconfirm && cd ${source}
+cd libclc-git && makepkg -si && cd ${source}
 
-cd libc++-git && makepkg -si --noconfirm --nocheck && cd ${source}
+cd libc++-git && makepkg -si --nocheck && cd ${source}
 
-cd openmp-git && makepkg -si --noconfirm && cd ${source}
+cd openmp-git && makepkg -si && cd ${source}
 
-cd lib32-llvm-git && makepkg -si --noconfirm && cd ${source}
+cd lib32-llvm-git && makepkg -si && cd ${source}
 
-cd lib32-clang-git && makepkg -si --noconfirm && cd ${source}
+cd lib32-clang-git && makepkg -si && cd ${source}
 
 # make a copy of every pkg in package/ dir
 
