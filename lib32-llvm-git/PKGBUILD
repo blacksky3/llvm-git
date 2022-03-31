@@ -17,7 +17,7 @@ arch=(i686 x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
 makedepends=(cmake ninja lib32-libffi lib32-zlib python gcc-multilib lib32-libxml2 git)
 options=(staticlibs !lto) # extra/llvm has many test failures with LTO
-source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
 md5sums=(SKIP)
 
 pkgver() {

@@ -24,7 +24,7 @@ optdepends=('openmp: OpenMP support in clang with -fopenmp'
 conflicts=(clang-analyzer clang-tools-extra clang)
 replaces=(clang-analyzer clang-tools-extra)
 provides=(clang-analyzer clang-tools-extra clang)
-source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
 md5sums=(SKIP)
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid

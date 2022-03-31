@@ -24,7 +24,7 @@ makedepends_x86_64=(lib32-gcc-libs)
 options=(staticlibs)
 conflicts=(compiler-rt)
 provides=(compiler-rt)
-source=(git+https://github.com/llvm/llvm-project.git#branch=main)
+source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
 md5sums=(SKIP)
 
 pkgver() {

@@ -20,7 +20,7 @@ depends=(lib32-llvm-libs gcc-multilib)
 makedepends=(lib32-llvm cmake ninja python git)
 conflicts=(lib32-clang)
 provides=(lib32-clang)
-source=(git+https://github.com/llvm/llvm-project.git)
+source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
 sha256sums=(SKIP)
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
