@@ -76,4 +76,9 @@ package(){
 
   # Remove documentation sources
   rm -r "$pkgdir"/usr/share/doc/lld/lld/html/{_sources,.buildinfo}
+
+  # LLD docs to default Archlinux location
+  mv "$pkgdir/usr/share/doc/lld/lld" "$pkgdir/usr/share/doc/lld.doc"
+  rm -rf ${pkgdir}/usr/share/doc/lld
+  mv "$pkgdir/usr/share/doc/lld.doc" "$pkgdir/usr/share/doc/lld"
 }
