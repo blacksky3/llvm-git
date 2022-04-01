@@ -12,7 +12,7 @@
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
-pkgver=14.0.0.r1467.g984ce6e3
+pkgver=15.0.0
 pkgrel=1
 arch=(x86_64)
 license=(custom)
@@ -52,11 +52,6 @@ build() {
 
   ninja -C build
   ninja -C build llvm-spirv
-}
-
-check(){
-  # https://github.com/KhronosGroup/SPIRV-LLVM-Translator/issues/1433
-  LD_LIBRARY_PATH="${srcdir}/build/lib/SPIRV" make -C build test || echo "Tests failed"
 }
 
 package(){

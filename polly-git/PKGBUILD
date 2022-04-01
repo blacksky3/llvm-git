@@ -11,7 +11,8 @@
 pkgname=polly-git
 pkgdesc='High-level loop and data-locality optimizer and optimization infrastructure for LLVM (git version)'
 url='https://polly.llvm.org/'
-pkgver=15.0.0.r419656.g81f5c6270cdf
+pkgver=15.0.0
+commit=4fbde1ef40e6fa550b428b20a085a90d1fdfb071
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -19,7 +20,7 @@ depends=(gcc-libs)
 makedepends=(llvm cmake ninja python-sphinx git)
 conflicts=(polly)
 provides=(polly)
-source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
+source=(git+https://github.com/llvm/llvm-project.git#commit=$commit)
 md5sums=(SKIP)
 
 pkgver() {
@@ -56,11 +57,6 @@ build(){
   -DLLVM_BUILD_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
 
   ninja -C build/
-}
-
-check(){
-  cd ${srcdir}/llvm-project/polly/build
-  ninja check-polly
 }
 
 package(){

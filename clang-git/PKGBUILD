@@ -12,7 +12,8 @@
 pkgname=clang-git
 pkgdesc='C language family frontend for LLVM (git version)'
 url='https://clang.llvm.org/'
-pkgver=15.0.0.r419656.g81f5c6270cdf
+pkgver=15.0.0
+commit=4fbde1ef40e6fa550b428b20a085a90d1fdfb071
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -24,7 +25,7 @@ optdepends=('openmp: OpenMP support in clang with -fopenmp'
 conflicts=(clang-analyzer clang-tools-extra clang)
 replaces=(clang-analyzer clang-tools-extra)
 provides=(clang-analyzer clang-tools-extra clang)
-source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
+source=(git+https://github.com/llvm/llvm-project.git#commit=$commit)
 md5sums=(SKIP)
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
@@ -104,11 +105,6 @@ build() {
 
   cmake .. "${cmake_args[@]}"
   ninja
-}
-
-check(){
-  cd ${srcdir}/llvm-project/clang/build
-  LD_LIBRARY_PATH=$PWD/lib ninja check-clang{,-tools}
 }
 
 _python_optimize(){

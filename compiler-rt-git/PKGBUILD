@@ -12,7 +12,8 @@
 pkgname=compiler-rt-git
 pkgdesc='Compiler runtime libraries for clang (git version)'
 url='https://compiler-rt.llvm.org/'
-pkgver=15.0.0.r419656.g81f5c6270cdf
+pkgver=15.0.0
+commit=4fbde1ef40e6fa550b428b20a085a90d1fdfb071
 _pkgver=15.0.0
 pkgrel=1
 arch=(x86_64)
@@ -24,7 +25,7 @@ makedepends_x86_64=(lib32-gcc-libs)
 options=(staticlibs)
 conflicts=(compiler-rt)
 provides=(compiler-rt)
-source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5)
+source=(git+https://github.com/llvm/llvm-project.git#commit=$commit)
 md5sums=(SKIP)
 
 pkgver() {

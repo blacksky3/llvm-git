@@ -12,14 +12,15 @@
 pkgbase=llvm-git
 pkgname=(llvm-git llvm-libs-git llvm-ocaml-git)
 url='https://llvm.org/'
-pkgver=15.0.0.r419656.g81f5c6270cdf
+pkgver=15.0.0
+commit=4fbde1ef40e6fa550b428b20a085a90d1fdfb071
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
 makedepends=(cmake ninja libffi libedit ncurses libxml2 ocaml ocaml-ctypes ocaml-findlib
              python-setuptools python-psutil python-sphinx python-recommonmark git)
 options=(staticlibs !lto) # Getting thousands of test failures with LTO
-source=(git+https://github.com/llvm/llvm-project.git#commit=81f5c6270cdfcdf80e6296df216b696a7a37c8b5
+source=(git+https://github.com/llvm/llvm-project.git#commit=$commit
         llvm-config.h)
 md5sums=(SKIP
          SKIP)
@@ -64,11 +65,6 @@ build(){
   ninja -C build ocaml_doc
 }
 
-check(){
-  cd ${srcdir}/llvm-project/llvm/build
-  LD_LIBRARY_PATH=$PWD/lib ninja check
-}
-
 package_llvm-git(){
   pkgdesc='Collection of modular and reusable compiler and toolchain technologies (git version)'
   depends=(llvm-libs perl)
@@ -86,6 +82,10 @@ package_llvm-git(){
 
   # Remove documentation sources
   rm -r "$pkgdir"/usr/share/doc/LLVM/llvm/html/{_sources,.buildinfo}
+
+  # LLVM docs to default Archlinux location
+  mv "$pkgdir/usr/share/doc/LLVM/llvm" "$pkgdir/usr/share/doc/"
+  rm -rf ${pkgdir}/usr/share/doc/LLVM
 
   # The runtime libraries go into llvm-libs
   mv -f "$pkgdir"/usr/lib/lib{LLVM,LTO,Remarks}*.so* "$srcdir"
@@ -105,10 +105,6 @@ package_llvm-git(){
     # workarround for lldb that need llvm/Config/config.h
     cp "$srcdir/llvm-config.h" "$pkgdir/usr/include/llvm/Config/config.h"
   fi
-
-  # LLVM docs to default Archlinux location
-  mv "$pkgdir/usr/share/doc/LLVM/llvm" "$pkgdir/usr/share/doc/"
-  rm -rf ${pkgdir}/usr/share/doc/LLVM
 
   install -Dm644 "$srcdir/llvm-project/llvm/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/llvm-project/llvm/CREDITS.TXT" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"

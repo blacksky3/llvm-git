@@ -13,53 +13,25 @@ source=${pwd}
 
 echo "${source}"
 
-# prepare
-
-# makepkg --verifysource to build all package with the same commit
-
-cd llvm-git && makepkg --verifysource && cd ${source}
-
-cd lld-git && makepkg --verifysource && cd ${source}
-
-cd polly-git && makepkg --verifysource && cd ${source}
-
-cd compiler-rt-git && makepkg --verifysource && cd ${source}
-
-cd clang-git && makepkg --verifysource && cd ${source}
-
-cd lldb-git && makepkg --verifysource && cd ${source}
-
-cd spirv-llvm-translator-git && makepkg --verifysource && cd ${source}
-
-cd libclc-git && makepkg --verifysource && cd ${source}
-
-cd libc++-git && makepkg --verifysource && cd ${source}
-
-cd openmp-git && makepkg --verifysource && cd ${source}
-
-cd lib32-llvm-git && makepkg --verifysource && cd ${source}
-
-cd lib32-clang-git && makepkg --verifysource && cd ${source}
-
 # build
 
-cd llvm-git && makepkg -si --nocheck && cd ${source}
+cd llvm-git && makepkg -si && cd ${source}
 
-cd lld-git && makepkg -si --nocheck && cd ${source}
+cd lld-git && makepkg -si && cd ${source}
 
-cd polly-git && makepkg -si --nocheck && cd ${source}
+cd polly-git && makepkg -si && cd ${source}
 
 cd compiler-rt-git && makepkg -si && cd ${source}
 
-cd clang-git && makepkg -si --nocheck && cd ${source}
+cd clang-git && makepkg -si && cd ${source}
 
-cd lldb-git && makepkg -si --noconfirm && cd ${source}
+cd lldb-git && makepkg -si && cd ${source}
 
-cd spirv-llvm-translator-git && makepkg -si --nocheck && cd ${source}
+cd spirv-llvm-translator-git && makepkg -si && cd ${source}
 
 cd libclc-git && makepkg -si && cd ${source}
 
-cd libc++-git && makepkg -si --nocheck && cd ${source}
+cd libc++-git && makepkg -si && cd ${source}
 
 cd openmp-git && makepkg -si && cd ${source}
 
