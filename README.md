@@ -10,9 +10,10 @@ LLVM toolchain package for Archlinux. (git version)
 
 # Build
 
-    git clone https://github.com/blacksky3/linux-xanmod.git
-    cd linux-xanmod/{edge,stable,tt,lts.tt-edge.bore-edge.bore,cacule-edge,cacule-rdb-edge}
-    env_compiler=(1 or 2) makepkg -s
+    git clone https://github.com/blacksky3/lllvm.git
+    cd lllvm-git
+    chmod +x ./build.sh
+    ./build.sh
     
 ## After succeful build
 
