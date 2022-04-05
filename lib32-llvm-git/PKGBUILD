@@ -12,7 +12,7 @@
 pkgname=(lib32-llvm-git lib32-llvm-libs-git)
 url='https://llvm.org/'
 pkgver=15.0.0
-commit=4fbde1ef40e6fa550b428b20a085a90d1fdfb071
+commit=6c9bc2dd1ca7bcbbd218e50e5f7f926dd99e6c53
 pkgrel=1
 arch=(i686 x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
