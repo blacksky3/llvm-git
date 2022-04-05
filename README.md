@@ -1,6 +1,6 @@
 # llvm-git
 
-LLVM toolchain package for Archlinux. (git version)
+LLVM toolchain packages for Archlinux. (git version)
 
 # Version
 
