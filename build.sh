@@ -9,7 +9,7 @@
 
 #!/usr/bin/bash
 
-source=${pwd}
+source=$(pwd)
 
 echo "${source}"
 
