@@ -17,7 +17,7 @@ LLVM toolchain package for Archlinux. (git version)
     
 ## After succeful build
 
-After a succeful build of the toolchain you'll need to recompile mesa package, because mesa and llvm are closely tied together. Everytime the llvm changes/updates, mesa needs to be rebuilt.
+After a succeful build of the toolchain you'll need to recompile mesa package, because mesa and llvm are closely tied together. Everytime llvm changes/updates, mesa needs to be rebuilt.
 
 You can rebuild mesa and lib32-mesa with this repo: https://github.com/blacksky3/mesa-git.git
 
