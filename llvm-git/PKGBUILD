@@ -59,10 +59,10 @@ build(){
   -DLLVM_ENABLE_SPHINX=ON \
   -DLLVM_ENABLE_DOXYGEN=OFF \
   -DSPHINX_WARNINGS_AS_ERRORS=OFF \
-  -DLLVM_BINUTILS_INCDIR=/usr/include \
-  -DLLVM_ENABLE_OCAMLDOC=OFF
+  -DLLVM_BINUTILS_INCDIR=/usr/include
 
   ninja -C build all
+  ninja -C build ocaml_doc
 }
 
 package_llvm-git(){
