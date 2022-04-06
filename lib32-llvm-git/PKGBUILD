@@ -64,7 +64,8 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   -DLLVM_BUILD_DOCS=OFF \
   -DLLVM_ENABLE_SPHINX=OFF \
   -DLLVM_ENABLE_DOXYGEN=OFF \
-  -DLLVM_BINUTILS_INCDIR=/usr/include
+  -DLLVM_BINUTILS_INCDIR=/usr/include \
+  -DLLVM_ENABLE_OCAMLDOC=OFF
 
   ninja -C build all
 }
@@ -88,6 +89,8 @@ package_lib32-llvm-git(){
   mv "$pkgdir/usr/include/llvm/Config/llvm-config.h" "$pkgdir/usr/lib32/llvm-config-32.h"
 
   rm -rf "$pkgdir"/usr/{bin,include,share/{doc,man,llvm,opt-viewer}}
+  # Fix for llvm that build ocaml
+  rm -rf "$pkgdir"/usr/lib/
 
   # Needed for multilib (https://bugs.archlinux.org/task/29951)
   # Header stub is taken from Fedora
