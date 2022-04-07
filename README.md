@@ -10,7 +10,7 @@ LLVM toolchain packages for Archlinux. (git version)
 
 # Build
 
-    git clone https://github.com/blacksky3/lllvm.git
+    git clone https://github.com/blacksky3/llvm-git.git
     cd lllvm-git
     chmod +x ./build.sh
     ./build.sh
