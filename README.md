@@ -6,7 +6,7 @@ LLVM toolchain packages for Archlinux. (git version)
 
 - 15.0.0
 
-- commit: 2db700215a2eebce7358c0a81a3d52d0a9d4a997
+- commit: ba1c70c69db853485c3f286f470a2efc9a4b7fea
 
 # Build
 
