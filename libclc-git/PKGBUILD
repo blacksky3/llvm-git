@@ -41,9 +41,11 @@ build(){
 
   rm -rf build
 
+  # Temp fix remove spirv-mesa3d- and spirv64-mesa3d-
   cmake -H. -G Ninja -Bbuild \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DLIBCLC_TARGETS_TO_BUILD="amdgcn--;amdgcn--amdhsa;clspv--;r600--;nvptx--;nvptx64--;nvptx--nvidiacl;nvptx64--nvidiacl"
 
   ninja -C build
 }
