@@ -91,17 +91,19 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   -DLLVM_INCLUDE_DOCS=OFF \
   -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
 
-  cmake .. "${cmake_args[@]}"
-  local distribution_components=$(_get_distribution_components | paste -sd\;)
-  test -n "$distribution_components"
-  cmake_args+=(-DLLVM_DISTRIBUTION_COMPONENTS="$distribution_components")
-
-  cmake .. "${cmake_args[@]}"
-  ninja
+  # cmake .. "${cmake_args[@]}"
+  # local distribution_components=$(_get_distribution_components | paste -sd\;)
+  # test -n "$distribution_components"
+  # cmake_args+=(-DLLVM_DISTRIBUTION_COMPONENTS="$distribution_components")
+  #
+  # cmake .. "${cmake_args[@]}"
+  # ninja
+  ninja all
 }
 
 package() {
-  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
+  # DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install
   rm -rf "$pkgdir"/usr/{bin,include,libexec,share}
 
   install -Dm644 "$srcdir/llvm-project/clang/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
