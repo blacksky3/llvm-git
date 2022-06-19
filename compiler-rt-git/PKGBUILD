@@ -12,8 +12,8 @@
 pkgname=compiler-rt-git
 pkgdesc='Compiler runtime libraries for clang (git version)'
 url='https://compiler-rt.llvm.org/'
-pkgver=15.0.0
-commit=ba1c70c69db853485c3f286f470a2efc9a4b7fea
+pkgver=15.0.0.r427244.gb911cbdcb9c4
+commit=b911cbdcb9c41fd2d191eb5a9246ae4700968014
 _pkgver=15.0.0
 pkgrel=1
 arch=(x86_64)

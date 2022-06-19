@@ -12,8 +12,8 @@
 pkgname=lib32-clang-git
 pkgdesc='C language family frontend for LLVM (32-bit) (git version)'
 url='https://clang.llvm.org/'
-pkgver=15.0.0
-commit=ba1c70c69db853485c3f286f470a2efc9a4b7fea
+pkgver=15.0.0.r427244.gb911cbdcb9c4
+commit=b911cbdcb9c41fd2d191eb5a9246ae4700968014
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -91,19 +91,19 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   -DLLVM_INCLUDE_DOCS=OFF \
   -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
 
-  # cmake .. "${cmake_args[@]}"
-  # local distribution_components=$(_get_distribution_components | paste -sd\;)
-  # test -n "$distribution_components"
-  # cmake_args+=(-DLLVM_DISTRIBUTION_COMPONENTS="$distribution_components")
-  #
-  # cmake .. "${cmake_args[@]}"
-  # ninja
-  ninja all
+  cmake .. "${cmake_args[@]}"
+  local distribution_components=$(_get_distribution_components | paste -sd\;)
+  test -n "$distribution_components"
+  cmake_args+=(-DLLVM_DISTRIBUTION_COMPONENTS="$distribution_components")
+
+  cmake .. "${cmake_args[@]}"
+  ninja
+  #ninja all
 }
 
 package() {
-  # DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
-  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install
+  DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
+  #DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install
   rm -rf "$pkgdir"/usr/{bin,include,libexec,share}
 
   install -Dm644 "$srcdir/llvm-project/clang/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

@@ -14,8 +14,8 @@
 pkgbase=libc++-git
 pkgname=(libc++-git libc++abi-git libc++experimental-git)
 url='https://libcxx.llvm.org/'
-pkgver=15.0.0
-commit=ba1c70c69db853485c3f286f470a2efc9a4b7fea
+pkgver=15.0.0.r427244.gb911cbdcb9c4
+commit=b911cbdcb9c41fd2d191eb5a9246ae4700968014
 pkgrel=1
 license=('custom:Apache 2.0 with LLVM Exception')
 arch=(x86_64)
@@ -98,7 +98,7 @@ package_libc++experimental-git(){
   conflicts=(libc++experimental)
   provides=(libc++experimental)
 
-  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/libc++experimental.a
+  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/x86_64-unknown-linux-gnu/libc++experimental.a
 
   install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE

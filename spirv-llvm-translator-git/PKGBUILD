@@ -12,7 +12,7 @@
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
-pkgver=15.0.0
+pkgver=15.0.0.r1548.g3f5e65d5
 pkgrel=1
 arch=(x86_64)
 license=(custom)
