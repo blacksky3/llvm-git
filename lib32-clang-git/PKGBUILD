@@ -13,7 +13,7 @@ pkgname=lib32-clang-git
 pkgdesc='C language family frontend for LLVM (32-bit) (git version)'
 url='https://clang.llvm.org/'
 pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -76,20 +76,23 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
 
   cd build
 
-  cmake .. -G Ninja \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_SKIP_RPATH=ON \
-  -DLLVM_LIBDIR_SUFFIX=32 \
-  -DCMAKE_C_FLAGS:STRING=-m32 \
-  -DCMAKE_CXX_FLAGS:STRING=-m32 \
-  -DLLVM_CONFIG="/usr/bin/llvm-config32" \
-  -DLLVM_LINK_LLVM_DYLIB=ON \
-  -DCLANG_LINK_CLANG_DYLIB=ON \
-  -DLLVM_ENABLE_RTTI=ON \
-  -DLLVM_BUILD_TESTS=OFF \
-  -DLLVM_INCLUDE_DOCS=OFF \
-  -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+  local cmake_args=(
+    -G Ninja
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_SKIP_RPATH=ON
+    -DCLANG_DEFAULT_PIE_ON_LINUX=ON
+    -DCLANG_LINK_CLANG_DYLIB=ON
+    -DCMAKE_CXX_FLAGS:STRING=-m32
+    -DCMAKE_C_FLAGS:STRING=-m32
+    -DLLVM_BUILD_TESTS=OFF
+    -DLLVM_CONFIG="/usr/bin/llvm-config32"
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_INCLUDE_DOCS=OFF
+    -DLLVM_LIBDIR_SUFFIX=32
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+  )
 
   cmake .. "${cmake_args[@]}"
   local distribution_components=$(_get_distribution_components | paste -sd\;)
@@ -98,12 +101,10 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
 
   cmake .. "${cmake_args[@]}"
   ninja
-  #ninja all
 }
 
 package() {
   DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install-distribution
-  #DESTDIR="$pkgdir" ninja -C ${srcdir}/llvm-project/clang/build/ install
   rm -rf "$pkgdir"/usr/{bin,include,libexec,share}
 
   install -Dm644 "$srcdir/llvm-project/clang/LICENSE.TXT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
