@@ -12,13 +12,13 @@
 pkgname=spirv-llvm-translator-git
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM IR (git version)'
 url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
-pkgver=15.0.0.r1548.g3f5e65d5
+pkgver=15.0.0.r1563.g21fee92c
 pkgrel=1
-commit=3f5e65d55e451f459259afcfe012f834d4fadf59
+commit=21fee92cd738a26e82f421416a660325b6fede26
 arch=(x86_64)
 license=(custom)
-depends=(llvm-libs)
-makedepends=(cmake llvm spirv-tools spirv-headers python python-setuptools clang make ninja gcc gcc-libs git)
+depends=(llvm-libs spirv-tools)
+makedepends=(git cmake llvm spirv-headers)
 conflicts=(spirv-llvm-translator)
 provides=(spirv-llvm-translator)
 source=(git+https://github.com/KhronosGroup/SPIRV-LLVM-Translator.git#commit=$commit)
@@ -28,10 +28,6 @@ pkgver(){
   cd ${srcdir}/SPIRV-LLVM-Translator
 
   echo 15.0.0.r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
-}
-
-prepare(){
-  sed -i 's/addRetAttr/addFnAttr/' $srcdir/SPIRV-LLVM-Translator/lib/SPIRV/SPIRVReader.cpp
 }
 
 build() {
@@ -57,8 +53,6 @@ build() {
 
 package(){
     DESTDIR="${pkgdir}" ninja -C ${srcdir}/SPIRV-LLVM-Translator/build/ install
-
     install -Dm755 ${srcdir}/SPIRV-LLVM-Translator/build/tools/llvm-spirv/llvm-spirv -t "${pkgdir}"/usr/bin
-
     install -Dm644 ${srcdir}/SPIRV-LLVM-Translator/LICENSE.TXT -t "${pkgdir}"/usr/share/licenses/${pkgname}/
 }
