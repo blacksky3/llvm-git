@@ -9,14 +9,14 @@
 #Credits: Laurent Carlier <lordheavym@gmail.com>
 
 pkgname=libclc-git
-pkgdesc='Library requirements of the OpenCL C programming languag (git version)'
+pkgdesc='Library requirements of the OpenCL C programming language (git version)'
 url='https://libclc.llvm.org/'
 pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 arch=(x86_64)
 license=(MIT)
-makedepends=(clang llvm cmake ninja python git spirv-llvm-translator git)
+makedepends=(clang llvm cmake ninja python spirv-llvm-translator git)
 conflicts=(libclc)
 provides=(libclc)
 source=(git+https://github.com/llvm/llvm-project.git#commit=$commit)
