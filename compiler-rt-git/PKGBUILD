@@ -12,8 +12,8 @@
 pkgname=compiler-rt-git
 pkgdesc='Compiler runtime libraries for clang (git version)'
 url='https://compiler-rt.llvm.org/'
-pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+pkgver=15.0.0.r428707.g5d787689b145
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 _pkgver=15.0.0
 pkgrel=1
 arch=(x86_64)
@@ -47,13 +47,19 @@ build(){
 
   rm -rf build
 
-  cmake -H. -G Ninja -Bbuild \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_SKIP_RPATH=ON \
-  -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/$_pkgver
+  mkdir build
 
-  ninja -C build
+  cd build
+
+  local cmake_args=(
+    -G Ninja
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_SKIP_RPATH=ON
+    -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/$_pkgver
+  )
+  cmake .. "${cmake_args[@]}"
+  ninja
 }
 
 package(){
