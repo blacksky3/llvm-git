@@ -11,8 +11,8 @@
 pkgname=polly-git
 pkgdesc='High-level loop and data-locality optimizer and optimization infrastructure for LLVM (git version)'
 url='https://polly.llvm.org/'
-pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+pkgver=15.0.0.r428707.g5d787689b145
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -45,18 +45,25 @@ build(){
 
   rm -rf build
 
-  cmake -H. -G Ninja -Bbuild \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DLLVM_LINK_LLVM_DYLIB=ON \
-  -DLLVM_BUILD_TESTS=ON \
-  -DLLVM_BUILD_DOCS=ON \
-  -DLLVM_ENABLE_SPHINX=ON \
-  -DSPHINX_WARNINGS_AS_ERRORS=OFF \
-  -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-  -DLLVM_BUILD_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+  mkdir build
 
-  ninja -C build/
+  cd build
+
+  local cmake_args=(
+    -G Ninja
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_DOCDIR=share/doc
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DLLVM_BUILD_DOCS=ON
+    -DLLVM_BUILD_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+    -DLLVM_BUILD_TESTS=ON
+    -DLLVM_ENABLE_SPHINX=ON
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DSPHINX_WARNINGS_AS_ERRORS=OFF
+  )
+  cmake .. "${cmake_args[@]}"
+  ninja
 }
 
 package(){
@@ -66,9 +73,5 @@ package(){
   install -Dm644 "$srcdir/llvm-project/polly/CREDITS.txt" "$pkgdir/usr/share/licenses/$pkgname/CREDITS"
 
   # Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/Polly/polly/html/{_sources,.buildinfo}
-
-  # Polly docs to default Archlinux location
-  mv "$pkgdir/usr/share/doc/Polly/polly" "$pkgdir/usr/share/doc/polly"
-  rm -rf ${pkgdir}/usr/share/doc/Polly
+  rm -r "$pkgdir"/usr/share/doc/polly/html/{_sources,.buildinfo}
 }
