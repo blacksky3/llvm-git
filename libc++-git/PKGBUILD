@@ -14,13 +14,13 @@
 pkgbase=libc++-git
 pkgname=(libc++-git libc++abi-git libc++experimental-git)
 url='https://libcxx.llvm.org/'
-pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+pkgver=15.0.0.r428707.g5d787689b145
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 license=('custom:Apache 2.0 with LLVM Exception')
 arch=(x86_64)
 depends=(gcc-libs)
-makedepends=(clang cmake llvm libunwind ninja python git)
+makedepends=(clang cmake ninja python git)
 options=(!lto)
 source=(git+https://github.com/llvm/llvm-project.git#commit=$commit)
 md5sums=(SKIP)
@@ -41,25 +41,24 @@ pkgver(){
 
 prepare(){
   mkdir -p build
-
-  cp -r ${srcdir}/llvm-project/libcxx ${srcdir}/llvm-project/llvm/projects/
-  cp -r ${srcdir}/llvm-project/libcxxabi ${srcdir}/llvm-project/llvm/projects/
+  sed -i 's/CREDITS.TXT/CREDITS/' ${srcdir}/llvm-project/libcxx{,abi}/LICENSE.TXT
 }
 
 build(){
   cd build
 
   cmake \
-    -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_CXX_COMPILER=clang++ \
-    -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=NO \
-    "$srcdir"/llvm-project/llvm
+  -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_CXX_COMPILER=clang++ \
+  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+  -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+  -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=NO \
+  ${srcdir}/llvm-project/runtimes
 
-    ninja cxx
-    ninja cxx_experimental
+  ninja cxx cxxabi cxx_experimental
 }
 
 # Do not remove the space before the () or commitpkg will
@@ -74,7 +73,7 @@ package_libc++-git(){
   DESTDIR="$pkgdir" ninja -C ${srcdir}/build install-cxx
 
   # remove file provided by libcxxabi
-  rm -rf ${pkgdir}/usr/include/c++/v1/*cxxabi*
+  #rm -rf ${pkgdir}/usr/include/c++/v1/*cxxabi*
 
   install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
@@ -98,7 +97,7 @@ package_libc++experimental-git(){
   conflicts=(libc++experimental)
   provides=(libc++experimental)
 
-  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/x86_64-unknown-linux-gnu/libc++experimental.a
+  install -Dm0644 -t "$pkgdir"/usr/lib/ ${srcdir}/build/lib/libc++experimental.a
 
   install -Dm0644 ${srcdir}/llvm-project/libcxx/CREDITS.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/CREDITS
   install -Dm0644 ${srcdir}/llvm-project/libcxx/LICENSE.TXT "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
