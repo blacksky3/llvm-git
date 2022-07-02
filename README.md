@@ -8,13 +8,13 @@ LLVM toolchain packages for Archlinux. (git version)
 
 - 15.0.0
 
-- commit: b911cbdcb9c41fd2d191eb5a9246ae4700968014
+- commit: 5d787689b14574fe58ba9798563f4a6df6059fbf
 
 ## SPIRV-LLVM-Translator
 
   - 15.0.0
 
-  -commit: 3f5e65d55e451f459259afcfe012f834d4fadf59
+  -commit: 21fee92cd738a26e82f421416a660325b6fede26
 
 # Build
 
