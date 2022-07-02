@@ -15,23 +15,23 @@ echo "${source}"
 
 # build
 
-#cd llvm-git && makepkg -si && cd ${source}
+cd llvm-git && makepkg -si && cd ${source}
 
-#cd lld-git && makepkg -si && cd ${source}
+cd lld-git && makepkg -si && cd ${source}
 
-#cd polly-git && makepkg -si && cd ${source}
+cd polly-git && makepkg -si && cd ${source}
 
-#cd compiler-rt-git && makepkg -si && cd ${source}
+cd compiler-rt-git && makepkg -si && cd ${source}
 
-#cd clang-git && makepkg -si && cd ${source}
+cd clang-git && makepkg -si && cd ${source}
 
-#cd lldb-git && makepkg -si && cd ${source}
+cd lldb-git && makepkg -si && cd ${source}
 
-#cd spirv-llvm-translator-git && makepkg -si && cd ${source}
+cd spirv-llvm-translator-git && makepkg -si && cd ${source}
 
-#cd libclc-git && makepkg -si && cd ${source}
+cd libclc-git && makepkg -si && cd ${source}
 
-#cd libc++-git && makepkg -si && cd ${source}
+cd libc++-git && makepkg -si && cd ${source}
 
 cd openmp-git && makepkg -si && cd ${source}
 
