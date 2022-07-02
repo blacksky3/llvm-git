@@ -12,8 +12,8 @@
 pkgname=lld-git
 pkgdesc='Linker from the LLVM project (git version)'
 url='https://lld.llvm.org/'
-pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+pkgver=15.0.0.r428707.g5d787689b145
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 arch=(x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -44,21 +44,26 @@ build(){
 
   rm -rf build
 
-  cmake -H. -G Ninja -Bbuild \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_SKIP_RPATH=ON \
-  -DPYTHON_EXECUTABLE=/usr/bin/python \
-  -DLLVM_LINK_LLVM_DYLIB=ON \
-  -DLLVM_INCLUDE_TESTS=ON \
-  -DLLVM_BUILD_TESTS=ON \
-  -DLLVM_BUILD_DOCS=ON \
-  -DLLVM_ENABLE_SPHINX=ON \
-  -DSPHINX_WARNINGS_AS_ERRORS=OFF \
-  -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-  -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+  mkdir build
 
-  ninja -C build
+  cd build
+
+  local cmake_args=(
+    -G Ninja
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_DOCDIR=share/doc
+    -DCMAKE_SKIP_RPATH=ON
+    -DLLVM_BUILD_DOCS=ON
+    -DLLVM_ENABLE_SPHINX=ON
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit
+    -DLLVM_INCLUDE_TESTS=ON
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-project/llvm"
+    -DSPHINX_WARNINGS_AS_ERRORS=OFF
+  )
+  cmake .. "${cmake_args[@]}"
+  ninja
 }
 
 package(){
@@ -71,10 +76,5 @@ package(){
   install -Dm644 -t "$pkgdir/usr/share/man/man1" ${srcdir}/llvm-project/lld/docs/ld.lld.1
 
   # Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/lld/lld/html/{_sources,.buildinfo}
-
-  # LLD docs to default Archlinux location
-  mv "$pkgdir/usr/share/doc/lld/lld" "$pkgdir/usr/share/doc/lld.doc"
-  rm -rf ${pkgdir}/usr/share/doc/lld
-  mv "$pkgdir/usr/share/doc/lld.doc" "$pkgdir/usr/share/doc/lld"
+  rm -r "$pkgdir"/usr/share/doc/lld/html/{_sources,.buildinfo}
 }
