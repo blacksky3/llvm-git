@@ -11,8 +11,8 @@
 
 pkgname=(lib32-llvm-git lib32-llvm-libs-git)
 url='https://llvm.org/'
-pkgver=15.0.0.r427244.gb911cbdcb9c4
-commit=4022551a154e01ca5347629fd429ca04b36801e0
+pkgver=15.0.0.r428707.g5d787689b145
+commit=5d787689b14574fe58ba9798563f4a6df6059fbf
 pkgrel=1
 arch=(i686 x86_64)
 license=('custom:Apache 2.0 with LLVM Exception')
@@ -47,31 +47,37 @@ export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
 
   rm -rf build
 
-  cmake -H. -G Ninja -Bbuild \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_SKIP_RPATH=ON \
-  -DLLVM_LIBDIR_SUFFIX=32 \
-  -DCMAKE_C_FLAGS:STRING=-m32 \
-  -DCMAKE_CXX_FLAGS:STRING=-m32 \
-  -DLLVM_TARGET_ARCH:STRING=i686 \
-  -DLLVM_HOST_TRIPLE=$CHOST \
-  -DLLVM_DEFAULT_TARGETS_TRIPLE="i686-pc-linux-gnu" \
-  -DLLVM_BUILD_LLVM_DYLIB=ON \
-  -DLLVM_LINK_LLVM_DYLIB=ON \
-  -DLLVM_ENABLE_RTTI=ON \
-  -DLLVM_ENABLE_FFI=ON \
-  -DLLVM_BUILD_DOCS=OFF \
-  -DLLVM_ENABLE_SPHINX=OFF \
-  -DLLVM_ENABLE_DOXYGEN=OFF \
-  -DLLVM_BINUTILS_INCDIR=/usr/include \
-  -DLLVM_ENABLE_OCAMLDOC=OFF
+  mkdir build
 
-  ninja -C build all
+  cd build
+
+  local cmake_args=(
+    -G Ninja
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_CXX_FLAGS:STRING=-m32
+    -DCMAKE_C_FLAGS:STRING=-m32
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_SKIP_RPATH=ON
+    -DLLVM_BINUTILS_INCDIR=/usr/include
+    -DLLVM_BUILD_DOCS=OFF
+    -DLLVM_BUILD_LLVM_DYLIB=ON
+    -DLLVM_DEFAULT_TARGETS_TRIPLE="i686-pc-linux-gnu"
+    -DLLVM_ENABLE_BINDINGS=OFF
+    -DLLVM_ENABLE_FFI=ON
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_ENABLE_SPHINX=OFF
+    -DLLVM_HOST_TRIPLE=$CHOST
+    -DLLVM_INCLUDE_BENCHMARKS=OFF
+    -DLLVM_LIBDIR_SUFFIX=32
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DLLVM_TARGET_ARCH:STRING=i686
+  )
+  cmake .. "${cmake_args[@]}"
+  ninja
 }
 
 package_lib32-llvm-git(){
-  pkgdesc='Collection of modular and reusable compiler and toolchain technologies (32-bit) (git version)'
+  pkgdesc='Compiler infrastructure (32-bit) (git version)'
   depends=(lib32-llvm-libs llvm)
   conflicts=(lib32-llvm)
   provides=(lib32-llvm)
@@ -89,8 +95,6 @@ package_lib32-llvm-git(){
   mv "$pkgdir/usr/include/llvm/Config/llvm-config.h" "$pkgdir/usr/lib32/llvm-config-32.h"
 
   rm -rf "$pkgdir"/usr/{bin,include,share/{doc,man,llvm,opt-viewer}}
-  # Fix for llvm that build ocaml
-  rm -rf "$pkgdir"/usr/lib/
 
   # Needed for multilib (https://bugs.archlinux.org/task/29951)
   # Header stub is taken from Fedora
