@@ -32,11 +32,11 @@ This mesa package provide mesa and lib32-mesa. (git version)
 
 # Prebuild package
 
-Prebuild package are available at https://repo.blacksky3.com/x86_64/blacksky3
+Prebuild package are available at https://repo.blacksky3.com/x86_64/llvm
 
 You can add this repo to your pacman.conf
 
-    [blacksky3]
+    [llvm]
     SigLevel = Optional TrustAll
     Server = https://repo.blacksky3.com/$arch/$repo
 
